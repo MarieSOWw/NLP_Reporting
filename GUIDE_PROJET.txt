@@ -1,0 +1,306 @@
+==========================================================================
+  NLP BUSINESS REPORTING PLATFORM
+  Guide pour comprendre ton projet, simplement
+==========================================================================
+
+Salut. Ce fichier t'explique ton projet comme on expliquerait a un enfant
+curieux. Pas de jargon, juste des images.
+
+
+==========================================================================
+  1. CE QUE FAIT TON PROJET (en une phrase)
+==========================================================================
+
+Tu prends un fichier CSV plein de ventes brutes, et le projet te recrache
+un beau rapport business avec des conseils. Comme si tu avais embauche un
+analyste qui lit les chiffres a ta place et te dit "voila ce qu'il faut
+faire".
+
+
+==========================================================================
+  2. LE PIPELINE EN IMAGES
+==========================================================================
+
+Imagine une chaine d'usine avec 7 ouvriers, chacun fait une seule chose.
+
+OUVRIER 1 - SPARK
+   Il prend le CSV (9 800 lignes de ventes) et le nettoie.
+   Il vire les lignes pourries (sales nulles, dates fausses).
+   Il calcule 12 KPIs : CA par annee, par region, top produits, etc.
+
+OUVRIER 2 - NLTK
+   Il regarde les chiffres et en sort des "faits" structures.
+   Ex : "L'annee 2018 c'est la meilleure", "Phones c'est le top produit".
+
+OUVRIER 3 - MISTRAL (l'IA, le Transformer)
+   Il prend les faits et ecrit un VRAI texte business.
+   Mais attention : il ne le fait pas n'importe comment.
+   D'abord il ecrit un JSON tres carre avec les chiffres exacts.
+   Ensuite il transforme ce JSON en prose fluide. Comme ca il
+   n'invente JAMAIS un chiffre - c'est verrouille.
+
+OUVRIER 4 - NLTK (encore lui)
+   Il relit le rapport que Mistral vient d'ecrire.
+   Il regarde : "Y a-t-il bien des risques mentionnes ? Des recommandations ?
+   Le ton est-il favorable ou inquietant ?"
+   Il met une note de qualite sur 100.
+
+OUVRIER 5 - POSTGRESQL
+   Il range tout dans une base de donnees.
+   12 rapports en tout : 1 global + 4 par annee + 4 par region + 3 par categorie.
+   Tout est range proprement dans 11 tables.
+
+OUVRIER 6 - FASTAPI
+   Il sert tout ce que tu as fabrique via des URLs internet.
+   C'est lui qui permet au dashboard web de voir les donnees.
+
+OUVRIER 7 - REPORTLAB
+   Il fabrique le PDF final de 25 pages avec couverture, graphiques,
+   recommandations. C'est le livrable.
+
+
+==========================================================================
+  3. LES 4 CHANTIERS (les ameliorations academiques)
+==========================================================================
+
+CHANTIER 1 - "Anti-mensonge de l'IA"
+   On a deux etapes pour generer le rapport :
+   D'abord on demande a Mistral un JSON tres precis (pas de texte libre).
+   Ensuite on lui demande d'habiller ce JSON en prose.
+   Resultat : il ne peut pas inventer de chiffre, il habille un JSON deja
+   verifie contre les vrais KPIs.
+
+CHANTIER 2 - "Comprendre ce que dit le rapport"
+   Pour chaque phrase du rapport, on lui colle une etiquette :
+   - tendance (decrit)
+   - anomalie (alerte)
+   - opportunite (a saisir)
+   - risque (a surveiller)
+   - recommandation (a faire)
+   Comme ca on mesure si le rapport est equilibre.
+
+CHANTIER 3 - "Note du rapport"
+   On evalue le rapport sur 6 criteres :
+   1. Couverture des faits cles (a-t-il cite la meilleure annee ?)
+   2. Ancrage numerique (assez de chiffres ?)
+   3. Recommandations presentes ?
+   4. Phrases bien lisibles ?
+   5. Pas de repetitions ?
+   6. Ton business adapte ?
+   Total sur 100. Permet de comparer deux rapports.
+
+CHANTIER 4 - "Recommandations en couleurs"
+   Chaque recommandation a 3 etiquettes :
+   - Priorite : haute / moyenne / basse (couleur)
+   - Niveau : strategique / tactique / operationnel (qui doit faire)
+   - Confiance : elevee / moyenne / faible (basee sur la volatilite)
+   Plus une justification chiffree obligatoire.
+
+
+==========================================================================
+  4. CE QU'ON A AMELIORE DANS CETTE SESSION
+==========================================================================
+
+PRIORITE 1 - L'affichage du dashboard NLTK est refait
+   Avant : "Sentiment : Neutre (0.00)" - une ligne plate sans sens business.
+   Apres : 4 grandes cartes colorees avec :
+   - Tonalite business (Favorable / Neutre / Vigilance / Risque)
+   - Score business (de -100 a +100, avec barre de progression)
+   - Niveau de risque percu (Faible / Modere / Eleve)
+   - Stabilite du discours (Stable / Instable)
+   Plus une barre de couverture business /100 et les themes en badges.
+   Couleurs : vert si favorable, orange si vigilance, rouge si risque.
+   Plus de mention de VADER (trop generique).
+
+PRIORITE 2 - Validation metier automatique
+   On a cree un module qui verifie que les KPIs ne se contredisent pas.
+   7 checks :
+   - CA global = somme des annees ?
+   - CA annuel = somme des trimestres ?
+   - CA par region = total ?
+   - Panier moyen = CA / commandes ?
+   - Aucune vente negative ?
+   - Aucune dimension manquante ?
+   - Croissance YoY coherente ?
+   Un badge discret dans le dashboard montre si tout va bien.
+
+PRIORITE 3 - Reasoning business des rapports
+   On a muscle le prompt envoye a Mistral.
+   Avant il pouvait dire "West domine."
+   Maintenant il doit enchainer : constat -> implication -> risque -> action.
+   "West domine, ce qui indique une dependance ; East et Central peuvent
+   servir de relais de croissance."
+
+PRIORITE 4 - Moteur de recommandations a regles
+   On a cree un fichier business_rules.py avec 7 regles deterministes :
+   - Croissance < 0 -> strategie defensive
+   - Region dominante > 35% -> diversifier
+   - Categorie dominante > 35% -> diversifier
+   - Trimestre en baisse > 10% -> action corrective
+   - Panier baisse mais commandes haut -> upsell
+   - Volatilite > 30% -> stabiliser
+   - Plusieurs annees positives -> capitaliser
+   Ces recos sont garanties meme si Mistral est en panne.
+
+PRIORITE 5 - Tracabilite insight -> KPI
+   On a cree insight_traceability.py.
+   Chaque insight important est lie a son KPI source et son niveau de
+   confiance. Genre :
+   { "insight": "West domine les ventes",
+     "kpi_source": "ventes_par_region",
+     "evidence": "West = 710k USD, South = 389k USD",
+     "confidence": "elevee" }
+   Comme ca, on peut auditer chaque affirmation.
+
+PRIORITE 6 - Chatbot analyste structure
+   Avant le chatbot etait correct mais bavard.
+   Maintenant il repond en 4 etapes obligatoires :
+   1. Constat
+   2. Preuve chiffree (max 2 chiffres)
+   3. Interpretation metier
+   4. Recommandation concrete
+   Plus de nouvelles intentions detectees : cause (pourquoi),
+   risque, recommandation, region. Quand il ne sait pas, il dit
+   "Donnee non disponible" au lieu d'inventer.
+
+PRIORITE 7 - Forecasting simple (RETIRE DU PROJET)
+   Cette fonctionnalite a ete enlevee : elle etait hors-scope par
+   rapport aux exigences academiques (le projet est descriptif, pas
+   predictif). Le fichier src/forecasting_simple.py est vide et
+   l'endpoint /api/forecast/simple n'existe plus.
+
+
+==========================================================================
+  5. COMMENT TESTER CHAQUE NOUVEAUTE
+==========================================================================
+
+1. Demarrer l'API :
+      python api.py
+   Aller sur http://127.0.0.1:8000
+
+2. Voir la nouvelle carte NLTK business sur le dashboard :
+      Ouvrir http://127.0.0.1:8000 dans le navigateur
+      La carte "Analyse Linguistique NLTK" est refondue.
+
+3. Tester l'endpoint tonalite business directement :
+      http://127.0.0.1:8000/api/nlp/business-tonalite
+
+4. Tester la validation metier :
+      http://127.0.0.1:8000/api/validation/business
+   Reponse : status_global ok/warning/error + liste des 7 checks.
+
+5. Tester les recommandations a regles :
+      http://127.0.0.1:8000/api/recommendations/rules
+   Reponse : 0 a 7 recos selon les regles activees.
+
+6. Tester la tracabilite des insights :
+      http://127.0.0.1:8000/api/insights/traceability
+   Reponse : 5 a 8 insights avec KPI source et confiance.
+
+7. (Forecasting retire du projet - cet endpoint n'existe plus)
+
+8. Tester le chatbot avec les questions analystes :
+      POST http://127.0.0.1:8000/api/chat
+      Body JSON : { "question": "Quelle region tire la croissance ?", "lang": "fr" }
+   Questions a essayer :
+   - "Pourquoi 2016 baisse ?"
+   - "Compare West et East"
+   - "Quels sont les risques principaux ?"
+   - "Quelle action recommandes-tu ?"
+   - "Quels produits concentrent le CA ?"
+
+9. Tout en ligne de commande :
+      python src/business_validation.py
+      python src/business_rules.py
+      python src/insight_traceability.py
+
+
+==========================================================================
+  6. NOUVEAUX ENDPOINTS API AJOUTES
+==========================================================================
+
+GET  /api/nlp/business-tonalite       Tonalite business enrichie (live)
+GET  /api/validation/business         Validation metier 7 checks
+GET  /api/recommendations/rules       Recos issues du moteur a regles
+GET  /api/insights/traceability       Tracabilite insight -> KPI -> confiance
+
+Tous acceptent year, region, category en query parameters.
+
+
+==========================================================================
+  7. FICHIERS NOUVEAUX OU MODIFIES
+==========================================================================
+
+NOUVEAUX :
+   src/business_validation.py        - 7 checks de coherence des KPIs
+   src/business_rules.py             - Moteur de 7 regles de recommandations
+   src/insight_traceability.py       - Lien insight -> KPI -> confiance
+   GUIDE_PROJET.txt                  - Ce fichier
+
+MODIFIES :
+   api.py                            - 5 nouveaux endpoints, chatbot structure,
+                                        nouvelles intentions detectees
+   dashboard/index.html              - Nouvelle carte NLTK business,
+                                        badge de validation
+   src/nlp_transformers.py           - Prompts enrichis (reasoning constat ->
+                                        implication -> risque -> action)
+
+
+==========================================================================
+  8. CE QU'IL FAUT DIRE EN SOUTENANCE
+==========================================================================
+
+"Mon projet transforme un dataset brut en rapport executif automatise.
+
+Le pipeline complet : Spark -> NLTK -> Mistral (Transformer) -> PostgreSQL
+-> FastAPI -> Dashboard et PDF. Il genere 12 rapports filtrables (1 global
++ 4 annees + 4 regions + 3 categories).
+
+Les quatre Chantiers academiques sont implementes : JSON valide
+anti-hallucination (1), classification d'intentions business (2), score
+qualite NLP sur 6 criteres (3), recommandations hierarchisees (4).
+
+J'ai pousse le projet vers un niveau prototype IA/Data professionnel :
+
+Un, une validation metier automatique 7 checks garantit la coherence
+des KPIs (pas de derive entre PDF, dashboard et API).
+
+Deux, un moteur de regles business produit des recommandations
+deterministes meme si le LLM est indisponible : couverture defensive.
+
+Trois, chaque insight important est tracable : on peut auditer
+quelle valeur source justifie quelle conclusion.
+
+Quatre, le chatbot RAG repond comme un analyste avec une structure
+imposee : constat, preuve chiffree, interpretation, recommandation.
+
+L'objectif n'est pas de battre Tableau ou Power BI : c'est de montrer
+qu'on peut industrialiser une chaine d'analyse business avec des
+guarde-fous (anti-hallucination, validation automatique, tracabilite)
+qu'un outil generique n'a pas."
+
+
+==========================================================================
+  9. CE QUI N'A PAS ETE FAIT VOLONTAIREMENT
+==========================================================================
+
+- Pas d'authentification API : c'est un prototype academique.
+- Pas de forecast/projection : hors-scope (projet descriptif).
+- Pas de A/B test sur les prompts : on l'evalue via le score qualite NLP.
+- Pas de fine-tuning Mistral : on s'en sort avec le prompt engineering.
+
+
+==========================================================================
+  10. POUR ALLER PLUS LOIN APRES LA SOUTENANCE
+==========================================================================
+
+- Ajouter une table des matieres dans le PDF (~25 pages c'est beaucoup).
+- Securiser l'API avec une cle (FastAPI Security).
+- Faire du fine-tuning Mistral sur du francais business.
+- Stocker la tracabilite des insights en BDD pour pouvoir l'auditer
+  historiquement.
+
+
+==========================================================================
+  Bonne soutenance. Tu as fait du beau boulot.
+==========================================================================

@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NLP Business Reporting Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   EXECUTIVE NOIR — Design System
+   Dark premium intelligence dashboard
+═══════════════════════════════════════════════════════════ */
+:root {
+  /* Core palette — deep navy obsidian */
+  --void:       #050810;
+  --deep:       #080c18;
+  --surface:    #0d1426;
+  --surface-2:  #121a30;
+  --surface-3:  #182038;
+  --rim:        rgba(255,255,255,.06);
+  --rim-strong: rgba(255,255,255,.11);
+
+  /* Accent — electric sapphire + gold */
+  --blue:       #3b82f6;
+  --blue-glow:  rgba(59,130,246,.18);
+  --gold:       #d4a853;
+  --gold-soft:  rgba(212,168,83,.12);
+  --gold-glow:  rgba(212,168,83,.25);
+  --emerald:    #10b981;
+  --rose:       #f43f5e;
+  --amber:      #f59e0b;
+  --violet:     #8b5cf6;
+  --cyan:       #06b6d4;
+
+  /* Typography */
+  --font-display: 'Syne', sans-serif;
+  --font-body:    'Instrument Sans', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+
+  /* Sidebar */
+  --sidebar-w: 240px;
+
+  /* Text */
+  --t1: #f0f4ff;
+  --t2: rgba(220,230,255,.55);
+  --t3: rgba(180,200,255,.32);
+
+  /* Spacing */
+  --r: 12px;
+  --r-lg: 18px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--t1);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Page system ── */
+.page { display:none; }
+.page.active { display:block; }
+
+/* ─────────────────────────────────────────────────────────
+   SIDEBAR — slim dark nav
+───────────────────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--deep);
+  border-right: 1px solid var(--rim);
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  padding: 28px 20px 22px;
+  border-bottom: 1px solid var(--rim);
+}
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0;
+}
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--blue), #2563eb);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 20px var(--blue-glow);
+}
+.brand-text h1 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--t1);
+}
+.brand-text p {
+  font-size: 10px;
+  color: var(--t3);
+  letter-spacing: .3px;
+  font-family: var(--font-mono);
+}
+
+.sidebar-section { padding: 8px 12px; }
+.sidebar-section-title {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--t3);
+  padding: 12px 8px 6px;
+  font-family: var(--font-mono);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--r);
+  color: var(--t2);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+  margin-bottom: 2px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-body);
+  letter-spacing: .2px;
+}
+.nav-item:hover {
+  background: var(--rim);
+  color: var(--t1);
+}
+.nav-item.active {
+  background: var(--blue-glow);
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,.2);
+}
+.nav-item .nav-icon { font-size: 16px; width: 20px; text-align:center; flex-shrink:0; }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid var(--rim);
+}
+.db-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--t3);
+  font-family: var(--font-mono);
+}
+.db-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+  box-shadow: 0 0 6px var(--emerald);
+}
+.db-dot.off { background: var(--rose); box-shadow: 0 0 6px var(--rose); }
+
+/* ─────────────────────────────────────────────────────────
+   CONTENT AREA
+───────────────────────────────────────────────────────── */
+.content {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+}
+.content-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px 32px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   TOPBAR
+───────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.topbar-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.topbar-left h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -.3px;
+  color: var(--t1);
+}
+.topbar-left p {
+  font-size: 13px;
+  color: var(--t2);
+  margin-top: 3px;
+}
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ─────────────────────────────────────────────────────────
+   CONTROLS
+───────────────────────────────────────────────────────── */
+.select, .input {
+  padding: 8px 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--rim-strong);
+  border-radius: var(--r);
+  font-size: 12px;
+  font-family: var(--font-body);
+  color: var(--t1);
+  transition: border .15s, box-shadow .15s;
+  appearance: none;
+  cursor: pointer;
+}
+.select:focus, .input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.input { width: 100%; }
+
+.btn {
+  padding: 8px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--rim-strong);
+  border-radius: var(--r);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  color: var(--t1);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s;
+  letter-spacing: .2px;
+}
+.btn:hover {
+  background: var(--surface-3);
+  border-color: rgba(255,255,255,.15);
+}
+.btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  box-shadow: 0 0 20px var(--blue-glow);
+}
+.btn-primary:hover {
+  background: #2563eb;
+  box-shadow: 0 0 30px rgba(59,130,246,.35);
+}
+.btn-gold {
+  background: var(--gold-soft);
+  border-color: rgba(212,168,83,.3);
+  color: var(--gold);
+}
+.btn-gold:hover {
+  background: rgba(212,168,83,.2);
+  box-shadow: 0 0 20px var(--gold-glow);
+}
+
+/* ─────────────────────────────────────────────────────────
+   KPI GRID — luxury metric cards
+───────────────────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all .2s;
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.kpi-card:hover {
+  border-color: rgba(59,130,246,.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,.4), 0 0 0 1px rgba(59,130,246,.1);
+  transform: translateY(-2px);
+}
+.kpi-card:hover::before { opacity: 1; }
+
+.kpi-card-glow {
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  opacity: .07;
+  pointer-events: none;
+}
+
+.kpi-icon {
+  font-size: 22px;
+  margin-bottom: 14px;
+  display: block;
+}
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 6px;
+}
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: -.5px;
+  line-height: 1;
+}
+.kpi-badge {
+  position: absolute;
+  top: 18px; right: 18px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+}
+.kpi-badge.up {
+  background: rgba(16,185,129,.12);
+  color: var(--emerald);
+  border: 1px solid rgba(16,185,129,.25);
+}
+.kpi-badge.down {
+  background: rgba(244,63,94,.12);
+  color: var(--rose);
+  border: 1px solid rgba(244,63,94,.25);
+}
+.kpi-sub {
+  font-size: 10px;
+  color: var(--t3);
+  margin-top: 6px;
+  font-family: var(--font-mono);
+}
+
+/* ─────────────────────────────────────────────────────────
+   CARDS
+───────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.card-header h3 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  color: var(--t1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--blue-glow);
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,.2);
+}
+
+/* ─────────────────────────────────────────────────────────
+   CHARTS GRID
+───────────────────────────────────────────────────────── */
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.chart-container {
+  position: relative;
+  height: 280px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   FILTER TAG
+───────────────────────────────────────────────────────── */
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  background: var(--blue-glow);
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,.2);
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  margin-right: 6px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   ANOMALIES
+───────────────────────────────────────────────────────── */
+.anomaly-item {
+  padding: 12px 16px;
+  border-radius: var(--r);
+  margin-bottom: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+}
+.anomaly-item.alert {
+  background: rgba(244,63,94,.07);
+  border: 1px solid rgba(244,63,94,.2);
+  color: #fda4af;
+}
+.anomaly-item.info {
+  background: rgba(16,185,129,.07);
+  border: 1px solid rgba(16,185,129,.2);
+  color: #6ee7b7;
+}
+
+/* ─────────────────────────────────────────────────────────
+   NLP BLOCK — premium editorial style
+───────────────────────────────────────────────────────── */
+.nlp-block {
+  background: var(--surface-2);
+  border: 1px solid var(--rim-strong);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r-lg);
+  padding: 24px 28px;
+  font-size: 14px;
+  line-height: 1.9;
+  color: rgba(220,230,255,.8);
+  position: relative;
+}
+.nlp-block::before {
+  content: '❝';
+  position: absolute;
+  top: 16px; left: 22px;
+  font-size: 42px;
+  color: rgba(212,168,83,.15);
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+.nlp-block p { margin-bottom: 12px; padding-left: 8px; }
+.nlp-block p:last-child { margin-bottom: 0; }
+
+.nlp-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-soft);
+  color: var(--gold);
+  border: 1px solid rgba(212,168,83,.25);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  margin-top: 14px;
+}
+.nlp-bullet {
+  padding: 5px 0;
+  font-size: 13px;
+  color: var(--t2);
+}
+
+/* ─────────────────────────────────────────────────────────
+   NLTK PANEL
+───────────────────────────────────────────────────────── */
+.nltk-panel {
+  background: var(--surface-2);
+  border: 1px solid var(--rim);
+  border-radius: var(--r);
+  padding: 16px;
+  margin-top: 14px;
+}
+.nltk-panel h4 {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.nltk-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--t2);
+}
+.nltk-tag {
+  padding: 3px 10px;
+  background: var(--blue-glow);
+  color: var(--blue);
+  border-radius: 12px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  border: 1px solid rgba(59,130,246,.15);
+}
+.sentiment-pos { color: var(--emerald); font-weight: 600; }
+.sentiment-neg { color: var(--rose); font-weight: 600; }
+.sentiment-neu { color: var(--amber); font-weight: 600; }
+
+/* Business tonalite cards (Priorite 1) */
+.biz-tonalite-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.biz-card {
+  background: var(--surface-2);
+  border: 1px solid var(--rim);
+  border-radius: var(--r);
+  padding: 14px;
+  position: relative;
+  transition: transform .15s ease;
+}
+.biz-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--r) var(--r) 0 0;
+  background: var(--rim);
+}
+.biz-card.favorable::before { background: #10b981; }
+.biz-card.neutre::before    { background: #6b7280; }
+.biz-card.vigilance::before { background: #f59e0b; }
+.biz-card.risque::before    { background: #ef4444; }
+.biz-card .biz-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 6px;
+}
+.biz-card .biz-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--t1);
+  line-height: 1.2;
+}
+.biz-card .biz-value.favorable { color: #10b981; }
+.biz-card .biz-value.neutre    { color: var(--t1); }
+.biz-card .biz-value.vigilance { color: #f59e0b; }
+.biz-card .biz-value.risque    { color: #ef4444; }
+.biz-card .biz-sub {
+  font-size: 11px;
+  color: var(--t3);
+  margin-top: 4px;
+}
+.biz-progress {
+  height: 4px;
+  background: var(--rim);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.biz-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .3s ease;
+}
+.biz-themes-wrap {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.biz-theme-badge {
+  padding: 3px 10px;
+  background: rgba(59,130,246,.08);
+  color: var(--blue);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid rgba(59,130,246,.18);
+}
+.biz-signals {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--t3);
+  margin-top: 4px;
+}
+.biz-signals strong.pos { color: #10b981; }
+.biz-signals strong.neg { color: #ef4444; }
+.biz-signals strong.risk { color: #f59e0b; }
+.biz-section-title {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin: 16px 0 8px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   LOADING
+───────────────────────────────────────────────────────── */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: var(--t3);
+  gap: 10px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--rim-strong);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─────────────────────────────────────────────────────────
+   AUDIO PANEL
+───────────────────────────────────────────────────────── */
+.audio-panel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.audio-panel .btn { padding: 6px 12px; font-size: 11px; }
+
+/* ─────────────────────────────────────────────────────────
+   LOGIN PAGE — cinematic dark luxury
+───────────────────────────────────────────────────────── */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--void);
+  overflow: hidden;
+}
+
+.login-left {
+  flex: 0 0 480px;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 56px;
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  border-right: 1px solid var(--rim);
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 56px;
+}
+.login-brand-icon {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--blue), #2563eb);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 0 30px var(--blue-glow);
+}
+.login-brand-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--t1);
+  letter-spacing: .3px;
+}
+.login-brand-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--t3);
+  letter-spacing: .5px;
+  margin-top: 2px;
+}
+
+.login-top-section { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.login-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.login-headline {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--t1);
+  line-height: 1.15;
+  letter-spacing: -.5px;
+  margin-bottom: 10px;
+}
+.login-headline span {
+  background: linear-gradient(135deg, var(--blue), var(--violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.login-sub {
+  font-size: 14px;
+  color: var(--t2);
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+.login-tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: 28px;
+  background: var(--surface-2);
+  border: 1px solid var(--rim);
+  border-radius: var(--r);
+  padding: 4px;
+}
+.login-tab {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: var(--t3);
+  transition: all .15s;
+}
+.login-tab.active {
+  background: var(--surface-3);
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,.2);
+}
+
+.login-form .form-group { margin-bottom: 16px; text-align: left; }
+.login-form label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--t3);
+  display: block;
+  margin-bottom: 8px;
+}
+.lf-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--rim-strong);
+  border-radius: var(--r);
+  font-size: 14px;
+  font-family: var(--font-body);
+  color: var(--t1);
+  transition: all .15s;
+  box-sizing: border-box;
+}
+.lf-input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-glow);
+}
+.lf-input::placeholder { color: var(--t3); }
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--r);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all .2s;
+  box-shadow: 0 0 30px var(--blue-glow);
+  letter-spacing: .5px;
+}
+.login-btn:hover {
+  background: #2563eb;
+  box-shadow: 0 0 50px rgba(59,130,246,.4);
+  transform: translateY(-1px);
+}
+
+/* Trust section */
+.trust-section { margin-top: auto; padding-top: 32px; border-top: 1px solid var(--rim); }
+.trust-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 12px;
+}
+.trust-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--rim);
+  border-radius: var(--r);
+  font-size: 11px;
+  color: var(--t2);
+  font-family: var(--font-mono);
+}
+
+.testimonial-box {
+  background: var(--surface-2);
+  border: 1px solid var(--rim-strong);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r);
+  padding: 18px 20px;
+}
+.testimonial-text {
+  font-size: 13px;
+  color: var(--t2);
+  line-height: 1.65;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+.testimonial-author { display: flex; align-items: center; gap: 10px; }
+.testimonial-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+.testimonial-name { font-size: 12px; font-weight: 600; color: var(--t1); }
+.testimonial-role { font-size: 11px; color: var(--t3); font-family: var(--font-mono); }
+
+/* Right panel — cinematic */
+.login-right {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(ellipse 90% 70% at 60% 30%, #0a1628 0%, #050810 70%);
+}
+.login-right::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 65% 30%, rgba(59,130,246,.15) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 30% 65%, rgba(139,92,246,.12) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 80% 70%, rgba(16,185,129,.08) 0%, transparent 50%);
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: .03;
+  background-image:
+    linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orbFloat 9s ease-in-out infinite;
+}
+.orb1 { width:350px; height:350px; background:rgba(59,130,246,.12); top:-80px; right:-40px; animation-delay:0s; }
+.orb2 { width:250px; height:250px; background:rgba(139,92,246,.14); bottom:40px; left:20px; animation-delay:-3.5s; }
+.orb3 { width:180px; height:180px; background:rgba(16,185,129,.1); top:45%; right:60px; animation-delay:-6s; }
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(20px,-28px) scale(1.05); }
+  66% { transform: translate(-14px,20px) scale(.95); }
+}
+
+.login-right-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 52px;
+  text-align: center;
+}
+
+.dash-illustration {
+  width: min(420px, 82%);
+  margin-bottom: 40px;
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,.5));
+  animation: illustFloat 6s ease-in-out infinite;
+}
+@keyframes illustFloat {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.login-right h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--t1);
+  margin-bottom: 12px;
+  letter-spacing: -.3px;
+  line-height: 1.2;
+}
+.login-right > .login-right-content > p {
+  font-size: 14px;
+  color: var(--t2);
+  line-height: 1.8;
+  max-width: 320px;
+  margin: 0 auto 36px;
+}
+
+.feature-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.pill {
+  padding: 8px 16px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 40px;
+  font-size: 11.5px;
+  color: var(--t2);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  backdrop-filter: blur(10px);
+  font-family: var(--font-body);
+}
+.pill-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+.stats-row {
+  display: flex;
+  gap: 40px;
+  margin-top: 44px;
+  padding-top: 36px;
+  border-top: 1px solid var(--rim);
+}
+.stat-item { text-align: center; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--t1);
+  display: block;
+  letter-spacing: -.5px;
+}
+.stat-lbl {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--t3);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* ─────────────────────────────────────────────────────────
+   REPORT PAGE
+───────────────────────────────────────────────────────── */
+.report-content { max-width: 820px; margin: 0 auto; }
+.report-section { margin-bottom: 32px; }
+.report-section h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rim-strong);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.report-text { font-size: 14px; line-height: 1.9; color: var(--t2); }
+
+/* ─────────────────────────────────────────────────────────
+   CHATBOT
+───────────────────────────────────────────────────────── */
+.chat-container {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 150px);
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--rim-strong); border-radius: 2px; }
+
+.chat-bubble {
+  max-width: 78%;
+  margin-bottom: 14px;
+  padding: 14px 18px;
+  border-radius: var(--r-lg);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.chat-bubble.user {
+  background: var(--blue);
+  color: #fff;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble.bot {
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  margin-right: auto;
+  border-bottom-left-radius: 4px;
+  color: var(--t2);
+}
+
+.chat-input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 16px 0;
+  border-top: 1px solid var(--rim);
+}
+.chat-input-bar .input {
+  flex: 1;
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+}
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.chat-suggestion {
+  padding: 6px 14px;
+  border: 1px solid var(--rim-strong);
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  background: var(--surface-2);
+  color: var(--t2);
+  transition: all .15s;
+  font-family: var(--font-body);
+}
+.chat-suggestion:hover {
+  border-color: rgba(59,130,246,.35);
+  color: var(--blue);
+  background: var(--blue-glow);
+}
+
+.chat-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--t3);
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
+.chat-loading .spinner { width: 14px; height: 14px; }
+
+/* Suggestions chips affichees apres chaque reponse du chatbot */
+.chat-suggestions {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(180,200,255,.15);
+}
+.chat-sug-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 8px;
+}
+.chat-sug-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.chat-sug-chip {
+  padding: 6px 12px;
+  background: rgba(59,130,246,.08);
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,.22);
+  border-radius: 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .15s ease;
+  font-family: inherit;
+  text-align: left;
+}
+.chat-sug-chip:hover {
+  background: rgba(59,130,246,.16);
+  border-color: rgba(59,130,246,.5);
+  transform: translateY(-1px);
+}
+.chat-sug-chip:active {
+  transform: translateY(0);
+}
+
+/* ─────────────────────────────────────────────────────────
+   ABOUT / DOCS
+───────────────────────────────────────────────────────── */
+.about-content { max-width: 880px; margin: 0 auto; }
+.pipeline-step {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  margin-bottom: 12px;
+  transition: all .2s;
+}
+.pipeline-step:hover {
+  border-color: rgba(59,130,246,.2);
+  background: var(--surface-2);
+}
+.step-number {
+  width: 38px; height: 38px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+  font-size: 14px;
+  box-shadow: 0 0 16px var(--blue-glow);
+}
+.pipeline-step h4 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+.pipeline-step p {
+  font-size: 13px;
+  color: var(--t2);
+  line-height: 1.6;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.tech-card {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--rim);
+  border-radius: var(--r-lg);
+  text-align: center;
+  transition: all .2s;
+}
+.tech-card:hover {
+  border-color: rgba(59,130,246,.25);
+  background: var(--surface-2);
+  transform: translateY(-2px);
+}
+.tech-icon { font-size: 30px; margin-bottom: 8px; display: block; }
+.tech-name { font-size: 12px; font-weight: 600; color: var(--t1); font-family: var(--font-mono); }
+
+/* ─────────────────────────────────────────────────────────
+   SETTINGS
+───────────────────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────────────────
+   FADE IN
+───────────────────────────────────────────────────────── */
+.fade-in { animation: fadeIn .4s ease-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ─────────────────────────────────────────────────────────
+   DIVIDER LINE WITH LABEL
+───────────────────────────────────────────────────────── */
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--t3);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-eyebrow::before, .section-eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rim);
+}
+
+/* ─────────────────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────────────────── */
+@media (max-width: 1024px) { .charts-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .login-right { display: none; } .login-left { flex: 1; padding: 40px 32px; } }
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); }
+  .content { margin-left: 0; }
+  .content-inner { padding: 16px; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .topbar { flex-direction: column; align-items: flex-start; }
+}
+
+/* ─────────────────────────────────────────────────────────
+   CHART.JS DARK THEME override
+───────────────────────────────────────────────────────── */
+canvas { background: transparent !important; }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- ═══════════ LOGIN ═══════════ -->
+<div class="page active" id="page-login">
+<div class="login-page">
+
+  <div class="login-left fade-in">
+    <div class="login-brand">
+      <div class="login-brand-icon">📊</div>
+      <div>
+        <div class="login-brand-name">NLP Reporting</div>
+        <div class="login-brand-sub">BUSINESS INTELLIGENCE PLATFORM</div>
+      </div>
+    </div>
+
+    <div class="login-top-section">
+      <div class="login-eyebrow">// Intelligence Artificielle & Données</div>
+      <div class="login-headline">Bienvenue<br><span>sur votre plateforme</span></div>
+      <p class="login-sub">Connectez-vous pour accéder à vos rapports business automatiques, dashboards interactifs et analyses NLP avancées.</p>
+
+      <div class="login-tabs">
+        <button class="login-tab active" onclick="toggleLoginTab('login')">Connexion</button>
+        <button class="login-tab" onclick="toggleLoginTab('register')">Inscription</button>
+      </div>
+
+      <div class="login-form">
+        <div id="loginForm">
+          <div class="form-group"><label>Adresse e-mail</label><input class="lf-input" type="email" value="admin@nlp.com" placeholder="email@domaine.com"></div>
+          <div class="form-group"><label>Mot de passe</label><input class="lf-input" type="password" value="admin" placeholder="••••••••"></div>
+          <button class="login-btn" onclick="doLogin()">Accéder au dashboard →</button>
+        </div>
+        <div id="registerForm" style="display:none">
+          <div class="form-group"><label>Nom complet</label><input class="lf-input" placeholder="Jean Dupont"></div>
+          <div class="form-group"><label>Adresse e-mail</label><input class="lf-input" type="email" placeholder="email@domaine.com"></div>
+          <div class="form-group"><label>Mot de passe</label><input class="lf-input" type="password" placeholder="••••••••"></div>
+          <button class="login-btn" onclick="doLogin()">Créer un compte →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-section">
+      <div class="trust-title">// Intégrations & Technologies</div>
+      <div class="trust-badges">
+        <div class="trust-badge">⚡ Spark</div>
+        <div class="trust-badge">🔤 NLTK</div>
+        <div class="trust-badge">🤖 Mistral</div>
+        <div class="trust-badge">🐘 PostgreSQL</div>
+        <div class="trust-badge">🚀 FastAPI</div>
+      </div>
+      <div class="testimonial-box">
+        <div class="testimonial-text">"Ce système génère automatiquement nos rapports business en quelques secondes. Un gain de temps considérable pour l'équipe direction."</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">Moussa Diallo</div>
+            <div class="testimonial-role">Directeur BI · ISM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="grid-overlay"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="login-right-content">
+      <svg class="dash-illustration" viewBox="0 0 440 275" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Shadow -->
+        <rect x="14" y="16" width="412" height="248" rx="16" fill="rgba(0,0,0,.4)"/>
+        <!-- Main card -->
+        <rect x="10" y="10" width="412" height="248" rx="16" fill="rgba(13,20,38,.9)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+        <!-- Top bar -->
+        <rect x="10" y="10" width="412" height="48" rx="16" fill="rgba(18,26,48,.8)"/>
+        <rect x="10" y="42" width="412" height="16" fill="rgba(18,26,48,.8)"/>
+        <!-- Dots -->
+        <circle cx="36" cy="34" r="5" fill="#f43f5e" opacity=".7"/>
+        <circle cx="54" cy="34" r="5" fill="#f59e0b" opacity=".7"/>
+        <circle cx="72" cy="34" r="5" fill="#10b981" opacity=".7"/>
+        <!-- Title -->
+        <rect x="100" y="28" width="90" height="11" rx="4" fill="rgba(255,255,255,.12)"/>
+        <!-- Gold accent line -->
+        <rect x="10" y="57" width="412" height="2" fill="url(#goldLine)" opacity=".6"/>
+        <defs>
+          <linearGradient id="goldLine" x1="0" y1="0" x2="412" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="transparent"/>
+            <stop offset="30%" stop-color="#d4a853"/>
+            <stop offset="70%" stop-color="#d4a853"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </linearGradient>
+          <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#1d4ed8"/>
+          </linearGradient>
+          <linearGradient id="greenGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="100%" stop-color="#059669"/>
+          </linearGradient>
+        </defs>
+        <!-- KPI cards row -->
+        <rect x="24" y="70" width="88" height="52" rx="10" fill="rgba(59,130,246,.18)" stroke="rgba(59,130,246,.35)" stroke-width="1"/>
+        <rect x="30" y="78" width="32" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
+        <rect x="30" y="88" width="54" height="10" rx="3" fill="#fff"/>
+        <rect x="30" y="104" width="42" height="4" rx="2" fill="rgba(59,130,246,.5)"/>
+        <rect x="122" y="70" width="88" height="52" rx="10" fill="rgba(16,185,129,.14)" stroke="rgba(16,185,129,.3)" stroke-width="1"/>
+        <rect x="128" y="78" width="28" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
+        <rect x="128" y="88" width="50" height="10" rx="3" fill="#fff"/>
+        <rect x="128" y="104" width="36" height="4" rx="2" fill="rgba(16,185,129,.5)"/>
+        <rect x="220" y="70" width="88" height="52" rx="10" fill="rgba(212,168,83,.12)" stroke="rgba(212,168,83,.3)" stroke-width="1"/>
+        <rect x="226" y="78" width="30" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
+        <rect x="226" y="88" width="46" height="10" rx="3" fill="#fff"/>
+        <rect x="226" y="104" width="40" height="4" rx="2" fill="rgba(212,168,83,.5)"/>
+        <rect x="318" y="70" width="88" height="52" rx="10" fill="rgba(139,92,246,.14)" stroke="rgba(139,92,246,.3)" stroke-width="1"/>
+        <rect x="324" y="78" width="26" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
+        <rect x="324" y="88" width="52" height="10" rx="3" fill="#fff"/>
+        <rect x="324" y="104" width="34" height="4" rx="2" fill="rgba(139,92,246,.5)"/>
+        <!-- Bar chart area -->
+        <rect x="24" y="136" width="210" height="110" rx="10" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+        <rect x="34" y="146" width="58" height="7" rx="3" fill="rgba(255,255,255,.2)"/>
+        <!-- Bars with gradient effect -->
+        <rect x="42" y="202" width="24" height="34" rx="4" fill="url(#barGrad)" opacity=".7"/>
+        <rect x="76" y="190" width="24" height="46" rx="4" fill="url(#barGrad)" opacity=".8"/>
+        <rect x="110" y="176" width="24" height="60" rx="4" fill="url(#barGrad)" opacity=".9"/>
+        <rect x="144" y="166" width="24" height="70" rx="4" fill="url(#barGrad)"/>
+        <rect x="178" y="183" width="24" height="53" rx="4" fill="url(#barGrad)" opacity=".85"/>
+        <!-- x-axis ticks -->
+        <rect x="42" y="238" width="24" height="3" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="76" y="238" width="24" height="3" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="110" y="238" width="24" height="3" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="144" y="238" width="24" height="3" rx="1" fill="rgba(255,255,255,.15)"/>
+        <rect x="178" y="238" width="24" height="3" rx="1" fill="rgba(255,255,255,.15)"/>
+        <!-- Donut chart -->
+        <circle cx="340" cy="192" r="44" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="30"/>
+        <circle cx="340" cy="192" r="44" fill="none" stroke="#3b82f6" stroke-width="30" stroke-dasharray="92 184" stroke-dashoffset="0" opacity=".9"/>
+        <circle cx="340" cy="192" r="44" fill="none" stroke="#10b981" stroke-width="30" stroke-dasharray="58 184" stroke-dashoffset="-92" opacity=".8"/>
+        <circle cx="340" cy="192" r="44" fill="none" stroke="#d4a853" stroke-width="30" stroke-dasharray="34 184" stroke-dashoffset="-150" opacity=".75"/>
+        <!-- Center of donut -->
+        <circle cx="340" cy="192" r="28" fill="rgba(13,20,38,.95)"/>
+        <rect x="326" y="187" width="28" height="7" rx="3" fill="rgba(255,255,255,.45)"/>
+        <rect x="330" y="199" width="20" height="5" rx="2" fill="rgba(255,255,255,.2)"/>
+        <!-- Trend line -->
+        <polyline points="244,228 264,212 284,218 304,196 324,202 344,178 364,184 384,160" stroke="rgba(16,185,129,.7)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="244,228 264,212 284,218 304,196 324,202 344,178 364,184 384,160 384,238 244,238" fill="rgba(16,185,129,.07)"/>
+        <!-- Gold top accent -->
+        <rect x="24" y="136" width="4" height="110" rx="2" fill="url(#goldLine)" opacity=".5"/>
+      </svg>
+
+      <h2>Vos données, en langage naturel</h2>
+      <p>Rapports business automatiques, anomalies temps réel et insights générés par IA.</p>
+      <div class="feature-pills">
+        <div class="pill"><span class="pill-dot" style="background:#3b82f6"></span>Dashboard interactif</div>
+        <div class="pill"><span class="pill-dot" style="background:#10b981"></span>Rapports NLP auto</div>
+        <div class="pill"><span class="pill-dot" style="background:#f59e0b"></span>Chatbot RAG</div>
+        <div class="pill"><span class="pill-dot" style="background:#d4a853"></span>Export PDF</div>
+        <div class="pill"><span class="pill-dot" style="background:#f43f5e"></span>Alertes anomalies</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item"><span class="stat-num">9 800</span><div class="stat-lbl">Transactions</div></div>
+        <div class="stat-item"><span class="stat-num">12</span><div class="stat-lbl">KPIs calculés</div></div>
+        <div class="stat-item"><span class="stat-num">100%</span><div class="stat-lbl">Automatisé</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="sidebar" id="sidebar" style="display:none">
+  <div class="sidebar-brand">
+    <div class="brand-lockup">
+      <div class="brand-icon">📊</div>
+      <div class="brand-text">
+        <h1>NLP Reporting</h1>
+        <p>BUSINESS INTELLIGENCE</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">// Principal</div>
+    <button class="nav-item active" onclick="navigate('dashboard',this)"><span class="nav-icon">📈</span> Dashboard</button>
+    <button class="nav-item" onclick="navigate('report',this)"><span class="nav-icon">📄</span> Rapport</button>
+    <button class="nav-item" onclick="navigate('chatbot',this)"><span class="nav-icon">💬</span> Assistant IA</button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">// Système</div>
+    <button class="nav-item" onclick="navigate('about',this)"><span class="nav-icon">📖</span> Documentation</button>
+    <button class="nav-item" onclick="navigate('settings',this)"><span class="nav-icon">⚙️</span> Paramètres</button>
+  </div>
+
+  <div class="sidebar-section">
+    <button class="nav-item" onclick="doLogout()" style="color:#f43f5e"><span class="nav-icon">🚪</span> Déconnexion</button>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="db-status"><span class="db-dot" id="dbDot"></span> <span id="dbLabel">PostgreSQL</span></div>
+  </div>
+</aside>
+
+<!-- ═══════════ CONTENT ═══════════ -->
+<div class="content" id="contentArea" style="display:none">
+
+<!-- DASHBOARD -->
+<div class="page" id="page-dashboard"><div class="content-inner">
+  <div class="topbar fade-in">
+    <div class="topbar-left">
+      <div class="topbar-eyebrow">// Intelligence d'affaires</div>
+      <h2 id="dashTitle">Dashboard Business</h2>
+      <p id="dashSub">Vue d'ensemble de la performance commerciale</p>
+    </div>
+    <div class="topbar-actions">
+      <select class="select" id="fYear" onchange="applyFilters()"><option value="">Toutes les années</option></select>
+      <select class="select" id="fRegion" onchange="applyFilters()"><option value="">Toutes les régions</option></select>
+      <select class="select" id="fCategory" onchange="applyFilters()"><option value="">Toutes les catégories</option></select>
+      <select class="select" id="fLang" onchange="changeLang()"><option value="fr">🇫🇷 FR</option><option value="en">🇬🇧 EN</option></select>
+      <button class="btn btn-gold" onclick="genPDF()">📄 Export PDF</button>
+    </div>
+  </div>
+
+  <div id="activeFilters" style="margin-bottom:16px"></div>
+  <div class="kpi-grid" id="kpiGrid"><div class="loading"><div class="spinner"></div> Chargement des métriques...</div></div>
+
+  <div class="section-eyebrow">Analyse graphique</div>
+  <div class="charts-grid">
+    <div class="card"><div class="card-header"><h3 id="t1">📈 CA par Année</h3></div><div class="chart-container"><canvas id="c1"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3>🌍 Ventes par Région</h3></div><div class="chart-container"><canvas id="c2"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3>🏷️ Catégories</h3></div><div class="chart-container"><canvas id="c3"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3 id="t4">📉 Variations Trimestrielles</h3></div><div class="chart-container"><canvas id="c4"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3>🏆 Top Sous-catégories</h3></div><div class="chart-container"><canvas id="c5"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3>👥 Segments Clients</h3></div><div class="chart-container"><canvas id="c6"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3 id="t7">📊 Évolution Mensuelle</h3></div><div class="chart-container"><canvas id="c7"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3 id="t8">🗺️ Comparaison Régionale</h3></div><div class="chart-container"><canvas id="c8"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3 id="t9">🛒 Volume de Commandes</h3></div><div class="chart-container"><canvas id="c9"></canvas></div></div>
+    <div class="card"><div class="card-header"><h3 id="t10">📈 CA Trimestriel Absolu</h3></div><div class="chart-container"><canvas id="c10"></canvas></div></div>
+  </div>
+
+  <div class="section-eyebrow">Anomalies, Recommandations & Analyse NLP</div>
+  <div class="card"><div class="card-header"><h3>🚨 Anomalies & Signaux Positifs</h3><span class="card-badge" id="anomCount">0</span></div><div id="anomList"><div class="loading"><div class="spinner"></div></div></div></div>
+  <div class="card"><div class="card-header"><h3>🎯 Recommandations Stratégiques</h3><span class="card-badge" id="recoCount">0</span></div><div id="recoList"><div class="loading"><div class="spinner"></div></div></div></div>
+  <div class="card"><div class="card-header"><h3>🔤 Analyse Linguistique NLTK</h3><div id="validationBadge" style="font-size:11px;color:var(--t3)"></div></div><div id="nltkBlock"><div class="loading"><div class="spinner"></div></div></div></div>
+  <div class="card"><div class="card-header"><h3>🤖 Rapport NLP — Mistral</h3></div><div id="nlpBlock"><div class="loading"><div class="spinner"></div></div></div></div>
+
+  <div class="audio-panel" id="audioPanel" style="display:none">
+    <button class="btn" onclick="speakContent('full')">▶ Rapport complet</button>
+    <button class="btn" onclick="speakContent('summary')">▶ Résumé</button>
+    <button class="btn" onclick="speakContent('alerts')">▶ Alertes</button>
+    <button class="btn" onclick="stopSpeak()" style="color:var(--rose)">⏹ Stop</button>
+    <label style="font-size:11px;color:var(--t3);margin-left:8px;font-family:var(--font-mono)">Vitesse:</label>
+    <select class="select" id="speechRate" style="width:70px;padding:4px 8px;font-size:11px">
+      <option value="0.8">0.8x</option>
+      <option value="1" selected>1x</option>
+      <option value="1.2">1.2x</option>
+    </select>
+  </div>
+</div></div>
+
+<!-- REPORT -->
+<div class="page" id="page-report"><div class="content-inner">
+  <div class="topbar fade-in">
+    <div class="topbar-left">
+      <div class="topbar-eyebrow">// Rapport de direction</div>
+      <h2>📄 Rapport Complet</h2>
+      <p>Généré automatiquement par le pipeline NLP</p>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-gold" onclick="genPDF()">📄 Télécharger PDF</button>
+      <button class="btn" onclick="speakContent('full')">🔊 Lire</button>
+      <button class="btn" onclick="stopSpeak()">⏹</button>
+    </div>
+  </div>
+  <div class="report-content fade-in" id="reportContent"><div class="loading"><div class="spinner"></div></div></div>
+</div></div>
+
+<!-- CHATBOT -->
+<div class="page" id="page-chatbot"><div class="content-inner">
+  <div class="topbar fade-in">
+    <div class="topbar-left">
+      <div class="topbar-eyebrow">// Mistral RAG</div>
+      <h2>💬 Assistant Business IA</h2>
+      <p>Posez vos questions sur les données</p>
+    </div>
+  </div>
+  <div class="chat-container fade-in">
+    <div class="chat-suggestions">
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Quelle region tire la croissance ?</span>
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Pourquoi 2016 baisse ?</span>
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Compare West et East</span>
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Quels sont les risques principaux ?</span>
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Quelle action recommandes-tu ?</span>
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Quels produits concentrent le CA ?</span>
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Performance 2018</span>
+      <span class="chat-suggestion" onclick="askChat(this.textContent)">Anomalies detectees</span>
+    </div>
+    <div class="chat-messages" id="chatMsgs">
+      <div class="chat-bubble bot">Bonjour. Je suis Sup'Bot, votre assistant analyste pour Superstore. Je reponds aux questions sur les ventes, regions, categories et tendances entre 2015 et 2018. Pour les sujets hors de ce perimetre, je ne pourrai pas vous aider. Souhaitez-vous explorer un sujet ?<div class="chat-suggestions" style="margin-top:12px;padding-top:12px;border-top:1px dashed rgba(180,200,255,.15)"><div class="chat-sug-label">Suggestions :</div><div class="chat-sug-chips"><button class="chat-sug-chip" onclick="chatSuggest('Quelle region tire la croissance ?')">Quelle region tire la croissance ?</button><button class="chat-sug-chip" onclick="chatSuggest('Quels sont les risques principaux ?')">Quels sont les risques principaux ?</button><button class="chat-sug-chip" onclick="chatSuggest('Compare West et East')">Compare West et East</button></div></div></div>
+    </div>
+    <div class="chat-input-bar">
+      <input class="input" id="chatInput" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="btn btn-primary" onclick="sendChat()">Envoyer →</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about"><div class="content-inner">
+  <div class="topbar fade-in">
+    <div class="topbar-left">
+      <div class="topbar-eyebrow">// Architecture système</div>
+      <h2>📖 Documentation</h2>
+      <p>Pipeline et technologies du projet</p>
+    </div>
+  </div>
+  <div class="about-content fade-in">
+    <div class="card" style="margin-bottom:24px">
+      <h3 style="font-family:var(--font-display);font-size:16px;margin-bottom:12px">🎯 Objectif</h3>
+      <p class="report-text">Construire un <strong style="color:var(--t1)">système capable de générer des rapports business automatiques</strong> en langage naturel. Pipeline complet : <code style="font-family:var(--font-mono);font-size:12px;color:var(--blue);background:var(--blue-glow);padding:2px 6px;border-radius:4px">Data → Analytics → NLP → Dashboard</code></p>
+    </div>
+
+    <div class="section-eyebrow">Pipeline de traitement</div>
+    <div class="pipeline-step"><div class="step-number">1</div><div><h4>Apache Spark</h4><p>Chargement CSV, nettoyage, 12 KPIs calculés (CA, variations, régions, segments...)</p></div></div>
+    <div class="pipeline-step"><div class="step-number">2</div><div><h4>NLTK</h4><p>Tokenisation, NER, analyse de sentiment VADER, extraction de mots-clés</p></div></div>
+    <div class="pipeline-step"><div class="step-number">3</div><div><h4>Mistral API</h4><p>Génération de rapport NLP en langage naturel (FR/EN) via Mistral API</p></div></div>
+    <div class="pipeline-step"><div class="step-number">4</div><div><h4>PostgreSQL</h4><p>11 tables = source unique de vérité du système</p></div></div>
+    <div class="pipeline-step"><div class="step-number">5</div><div><h4>FastAPI</h4><p>20+ endpoints REST + chatbot RAG entre PostgreSQL et les consommateurs</p></div></div>
+    <div class="pipeline-step"><div class="step-number">6</div><div><h4>Restitution</h4><p>Dashboard web (10 graphiques), PDF (13 graphiques), Grafana, Audio, Chatbot RAG</p></div></div>
+
+    <div class="section-eyebrow">Technologies</div>
+    <div class="tech-grid">
+      <div class="tech-card"><div class="tech-icon">⚡</div><div class="tech-name">Spark</div></div>
+      <div class="tech-card"><div class="tech-icon">🐍</div><div class="tech-name">Python</div></div>
+      <div class="tech-card"><div class="tech-icon">🔤</div><div class="tech-name">NLTK</div></div>
+      <div class="tech-card"><div class="tech-icon">🤖</div><div class="tech-name">Mistral</div></div>
+      <div class="tech-card"><div class="tech-icon">🐘</div><div class="tech-name">PostgreSQL</div></div>
+      <div class="tech-card"><div class="tech-icon">🚀</div><div class="tech-name">FastAPI</div></div>
+      <div class="tech-card"><div class="tech-icon">📊</div><div class="tech-name">Grafana</div></div>
+      <div class="tech-card"><div class="tech-icon">📄</div><div class="tech-name">ReportLab</div></div>
+    </div>
+
+    <div class="card" style="margin-top:24px">
+      <div class="card-header"><h3>📡 État du système</h3></div>
+      <div id="healthInfo"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- SETTINGS -->
+<div class="page" id="page-settings"><div class="content-inner">
+  <div class="topbar fade-in">
+    <div class="topbar-left">
+      <div class="topbar-eyebrow">// Configuration</div>
+      <h2>⚙️ Paramètres</h2>
+      <p>Gestion du profil et historique</p>
+    </div>
+  </div>
+  <div class="fade-in" style="max-width:600px">
+    <div class="card">
+      <h3 style="font-family:var(--font-display);margin-bottom:16px">👤 Profil</h3>
+      <div style="margin-bottom:12px"><label style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:6px">Nom</label><input class="input" value="Administrateur" style="background:var(--surface-2)"></div>
+      <div style="margin-bottom:12px"><label style="font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:6px">Email</label><input class="input" value="admin@nlp.com" style="background:var(--surface-2)"></div>
+      <button class="btn btn-primary" style="margin-top:8px">Sauvegarder</button>
+    </div>
+    <div class="card">
+      <h3 style="font-family:var(--font-display);margin-bottom:16px">📄 Historique PDF</h3>
+      <div id="pdfHistory"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+  </div>
+</div></div>
+
+</div><!-- /content -->
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+// CHART.JS — DARK THEME DEFAULTS
+// ═══════════════════════════════════════════════════════
+Chart.defaults.color = 'rgba(180,200,255,.45)';
+Chart.defaults.borderColor = 'rgba(255,255,255,.06)';
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.font.size = 11;
+
+const API='http://127.0.0.1:8000/api';
+const CC=['#3b82f6','#10b981','#d4a853','#f43f5e','#8b5cf6','#06b6d4','#f97316','#6366f1','#14b8a6','#a78bfa'];
+let charts={},currentData=null,fullData=null,lang='fr';
+const TR={
+  fr:{dashboard:'Dashboard Business',sub:'Vue d\'ensemble de la performance commerciale',revenue:'Chiffre d\'Affaires',growth:'Croissance',orders:'Commandes',basket:'Panier Moyen',topRegion:'Top Région',clients:'Clients',noData:'Aucune donnée'},
+  en:{dashboard:'Business Dashboard',sub:'Commercial performance overview',revenue:'Revenue',growth:'Growth',orders:'Orders',basket:'Avg Basket',topRegion:'Top Region',clients:'Clients',noData:'No data'}
+};
+
+function $(id){return document.getElementById(id)}
+function fmtM(v){v=parseFloat(v)||0;return v>=1e6?'$'+(v/1e6).toFixed(1)+'M':v>=1e3?'$'+(v/1e3).toFixed(0)+'k':'$'+v.toFixed(0)}
+async function api(ep){try{const r=await fetch(API+ep);if(!r.ok)throw 0;return await r.json()}catch(e){console.error(ep,e);return null}}
+function qs(){let s=`?lang=${lang}`;const y=$('fYear')?.value,r=$('fRegion')?.value,c=$('fCategory')?.value;if(y)s+=`&year=${y}`;if(r)s+=`&region=${r}`;if(c)s+=`&category=${c}`;return s}
+function getYear(){return $('fYear')?.value?parseInt($('fYear').value):null}
+
+function stripMd(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/^#{1,6}\s*.*?$/gm,'').replace(/#{1,6}\s*/g,'')
+    .replace(/\*\*\*(.+?)\*\*\*/g,'$1').replace(/\*\*(.+?)\*\*/g,'$1')
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g,'$1').replace(/__(.+?)__/g,'$1')
+    .replace(/^\s*[-—_=═─]{3,}\s*.*?$/gm,'').replace(/\s-{3,}\s/g,' ')
+    .replace(/^\s*[A-ZÉÈÀÂÎÔÛÇ]{4,}(?:\s+[A-ZÉÈÀÂÎÔÛÇ0-9]{2,}){0,4}\s+/gm,'')
+    .replace(/^\s*(?:Analyse|Tendances|Opportunité|Note)\s*:\s*/gm,'')
+    .replace(/^\s*[\-\*•]\s+/gm,'').replace(/^\s*\d+\.\s+/gm,'')
+    .replace(/\s*→\s*/g,'. ').replace(/`([^`]+)`/g,'$1')
+    .replace(/ {2,}/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+}
+function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function nl2p(s){
+  const clean=stripMd(s);if(!clean)return '';
+  return clean.split(/\n\n+/).map(p=>`<p>${escapeHtml(p).replace(/\n/g,' ')}</p>`).join('');
+}
+
+// AUTH
+function toggleLoginTab(t){document.querySelectorAll('.login-tab').forEach(x=>x.classList.remove('active'));event.target.classList.add('active');$('loginForm').style.display=t==='login'?'block':'none';$('registerForm').style.display=t==='register'?'block':'none'}
+function doLogin(){$('page-login').classList.remove('active');$('sidebar').style.display='flex';$('contentArea').style.display='block';navigate('dashboard')}
+function doLogout(){$('sidebar').style.display='none';$('contentArea').style.display='none';$('page-login').classList.add('active')}
+
+// NAV
+function navigate(page,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const el=$('page-'+page);if(el)el.classList.add('active');
+  if(btn)btn.classList.add('active');
+  if(page==='dashboard')loadDashboard();
+  if(page==='report')loadReport();
+  if(page==='about')loadHealth();
+  if(page==='settings')loadPdfList();
+}
+
+// DASHBOARD
+async function loadDashboard(){
+  const d=await api('/dashboard'+qs());
+  if(!d){$('kpiGrid').innerHTML='<div class="loading">❌ API indisponible</div>';return}
+  currentData=d;
+  if(!fullData)fullData=await api('/dashboard?lang='+lang);
+  const af=d.applied_filters||{};let ft=[];
+  if(af.year)ft.push(`Année: ${af.year}`);if(af.region)ft.push(`Région: ${af.region}`);if(af.category)ft.push(`Catégorie: ${af.category}`);
+  $('activeFilters').innerHTML=ft.length?ft.map(f=>`<span class="filter-tag">${f}</span>`).join(''):'';
+  renderKPIs(d.kpi_global);renderCharts(d);renderAnomalies(d.anomalies);renderNLP(d.nlp_report);
+  renderRecommendations(d.nlp_report?.structure);
+  loadNltkPanel();
+  loadValidationBadge();
+  $('audioPanel').style.display=d.nlp_report?.rapport_complet?'flex':'none';
+}
+async function loadFilters(){const d=await api('/filters');if(!d)return;[['years','fYear'],['regions','fRegion'],['categories','fCategory']].forEach(([k,id])=>{const sel=$(id);(d[k]||[]).forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;sel.appendChild(o)})})}
+function applyFilters(){loadDashboard();if($('page-report').classList.contains('active'))loadReport()}
+function changeLang(){lang=$('fLang').value;$('dashTitle').textContent=TR[lang].dashboard;$('dashSub').textContent=TR[lang].sub;loadDashboard()}
+
+// KPIs
+function renderKPIs(g){
+  const t=TR[lang];if(!g||!g.ca_total){$('kpiGrid').innerHTML=`<div class="loading">${t.noData}</div>`;return}
+  const yr=$('fYear')?.value;
+  const crRaw=g.croissance_globale;
+  const crIsNull=crRaw===null||crRaw===undefined;
+  const cr=crIsNull?0:parseFloat(crRaw);
+  const cls=crIsNull?'':(cr>=0?'up':'down');
+  const sgn=cr>=0?'+':'';
+  let crLabel,crValue;
+  if(crIsNull){crLabel='—';crValue='N/A';}
+  else{crLabel=`${sgn}${cr.toFixed(1)}%`;crValue=`${sgn}${cr.toFixed(1)}%`;}
+  const crSublabel=crIsNull?(lang==='fr'?'1ère année':'1st year'):(yr?(lang==='fr'?'vs année préc.':'vs prev year'):(lang==='fr'?'2015-2018':'2015-2018'));
+  $('kpiGrid').innerHTML=`
+    <div class="kpi-card"><div class="kpi-icon">💰</div><div class="kpi-label">${t.revenue}</div><div class="kpi-value">${fmtM(g.ca_total)}</div>${!crIsNull?`<span class="kpi-badge ${cls}">${crLabel}</span>`:''}<div class="kpi-glow" style="background:var(--blue)"></div></div>
+    <div class="kpi-card"><div class="kpi-icon">📈</div><div class="kpi-label">${t.growth}</div><div class="kpi-value">${crValue}</div><div class="kpi-sub">${crSublabel}</div></div>
+    <div class="kpi-card"><div class="kpi-icon">🛒</div><div class="kpi-label">${t.orders}</div><div class="kpi-value">${parseInt(g.nb_commandes||0).toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-icon">🧾</div><div class="kpi-label">${t.basket}</div><div class="kpi-value">$${parseFloat(g.panier_moyen||0).toFixed(0)}</div></div>
+    <div class="kpi-card"><div class="kpi-icon">🌍</div><div class="kpi-label">${t.topRegion}</div><div class="kpi-value" style="font-size:18px">${g.meilleure_region||'—'}</div></div>
+    <div class="kpi-card"><div class="kpi-icon">👥</div><div class="kpi-label">${t.clients}</div><div class="kpi-value">${parseInt(g.nb_clients||0).toLocaleString()}</div></div>`;
+}
+
+// CHARTS — same logic, dark palette + data labels (lisibilite renforcee)
+// Enregistrement global du plugin ChartDataLabels (charge via CDN dans <head>).
+// On desactive l'affichage par defaut pour ne pas surcharger les anciens
+// graphiques : chaque chart active explicitement ses labels via DL_*.
+if (typeof Chart !== 'undefined' && typeof ChartDataLabels !== 'undefined') {
+  Chart.register(ChartDataLabels);
+  Chart.defaults.plugins.datalabels = { display: false };
+}
+
+function destroyCharts(){Object.values(charts).forEach(c=>{if(c)c.destroy()});charts={}}
+function co(extra){return{responsive:true,maintainAspectRatio:false,...extra}}
+const NL={plugins:{legend:{display:false}}};
+
+// Helpers de formatage pour les data labels
+function fmtUSDcompact(v){
+  if(v==null||isNaN(v))return '';
+  const abs = Math.abs(v);
+  if(abs>=1_000_000) return '$'+(v/1_000_000).toFixed(1).replace(/\.0$/,'')+'M';
+  if(abs>=1_000)     return '$'+(v/1_000).toFixed(1).replace(/\.0$/,'')+'k';
+  return '$'+Math.round(v);
+}
+function fmtPctSigned(v){
+  if(v==null||isNaN(v))return '';
+  return (v>=0?'+':'')+v.toFixed(1)+'%';
+}
+function fmtIntCompact(v){
+  if(v==null||isNaN(v))return '';
+  if(Math.abs(v)>=1_000) return (v/1_000).toFixed(1).replace(/\.0$/,'')+'k';
+  return Math.round(v).toString();
+}
+
+// Config de data labels pour les bar charts verticaux (CA en USD)
+const DL_BAR_USD = {
+  display: true,
+  anchor: 'end', align: 'end',
+  offset: -2,
+  color: 'rgba(220,232,255,.92)',
+  font: { weight: '600', size: 10, family: 'inherit' },
+  formatter: (v) => fmtUSDcompact(v),
+};
+
+// Config pour les bar charts horizontaux (indexAxis:'y')
+const DL_BARH_USD = {
+  display: true,
+  anchor: 'end', align: 'right',
+  offset: 4,
+  color: 'rgba(220,232,255,.92)',
+  font: { weight: '600', size: 10, family: 'inherit' },
+  formatter: (v) => fmtUSDcompact(v),
+};
+
+// Config pour les variations en pourcentage (avec signe)
+const DL_BAR_PCT = {
+  display: true,
+  anchor: (ctx) => (ctx.dataset.data[ctx.dataIndex] >= 0 ? 'end' : 'start'),
+  align: (ctx) => (ctx.dataset.data[ctx.dataIndex] >= 0 ? 'top' : 'bottom'),
+  offset: 4,
+  color: 'rgba(220,232,255,.92)',
+  font: { weight: '700', size: 10, family: 'inherit' },
+  formatter: (v) => fmtPctSigned(v),
+};
+
+// Config pour pie/doughnut (pourcentage de la part totale)
+const DL_PIE_PCT = {
+  display: true,
+  color: '#fff',
+  font: { weight: '700', size: 11, family: 'inherit' },
+  formatter: (v, ctx) => {
+    const total = ctx.chart.data.datasets[0].data.reduce((a,b)=>a+(b||0),0);
+    if(!total) return '';
+    const pct = (v/total)*100;
+    if(pct < 5) return '';
+    return pct.toFixed(1)+'%';
+  },
+};
+
+// Config pour les lignes (USD compact, affichage clairseme)
+const DL_LINE_USD = {
+  display: (ctx) => {
+    // Affiche uniquement 1 point sur N pour ne pas saturer
+    const n = ctx.dataset.data.length || 1;
+    const step = Math.max(1, Math.floor(n / 6));
+    return ctx.dataIndex % step === 0 || ctx.dataIndex === n - 1;
+  },
+  anchor: 'end', align: 'top', offset: 6,
+  color: 'rgba(220,232,255,.85)',
+  font: { weight: '600', size: 9, family: 'inherit' },
+  backgroundColor: 'rgba(15,23,42,.7)',
+  borderRadius: 4,
+  padding: { top: 2, bottom: 2, left: 5, right: 5 },
+  formatter: (v) => fmtUSDcompact(v),
+};
+
+// Config pour les lignes (int compact, ex: commandes)
+const DL_LINE_INT = {
+  ...DL_LINE_USD,
+  formatter: (v) => fmtIntCompact(v),
+};
+
+function renderCharts(d){
+  destroyCharts();
+  const yr=getYear();
+  const allAn=d.annual_all||d.annual||[];
+  const gridColor='rgba(255,255,255,.06)';
+  const tickColor='rgba(180,200,255,.35)';
+
+  const scaleOpts={grid:{color:gridColor},ticks:{color:tickColor}};
+  const yFmt={...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>fmtM(v)}};
+
+  if(yr&&d.quarterly?.length){
+    $('t1').textContent=`📈 CA par Trimestre (${yr})`;
+    charts.c1=new Chart($('c1'),{type:'bar',data:{labels:d.quarterly.map(r=>'T'+r.trimestre),datasets:[{data:d.quarterly.map(r=>parseFloat(r.ventes_totales)),backgroundColor:CC,borderRadius:8,borderSkipped:false,datalabels:DL_BAR_USD}]},options:co({...NL,scales:{x:scaleOpts,y:yFmt},layout:{padding:{top:20}},plugins:{legend:{display:false},datalabels:DL_BAR_USD}})});
+  } else if(allAn.length){
+    $('t1').textContent='📈 CA par Année';
+    charts.c1=new Chart($('c1'),{type:'bar',data:{labels:allAn.map(r=>r.annee),datasets:[{data:allAn.map(r=>parseFloat(r.ca_annuel)),backgroundColor:CC,borderRadius:8,borderSkipped:false,datalabels:DL_BAR_USD}]},options:co({...NL,scales:{x:scaleOpts,y:yFmt},layout:{padding:{top:20}},plugins:{legend:{display:false},datalabels:DL_BAR_USD}})});
+  }
+  if(d.regions?.length)charts.c2=new Chart($('c2'),{type:'doughnut',data:{labels:d.regions.map(r=>r.region),datasets:[{data:d.regions.map(r=>parseFloat(r.ventes_totales)),backgroundColor:CC,borderWidth:0,hoverOffset:8,datalabels:DL_PIE_PCT}]},options:co({plugins:{legend:{position:'right',labels:{color:'rgba(180,200,255,.55)',font:{size:11}}},datalabels:DL_PIE_PCT}})});
+  if(d.categories?.length)charts.c3=new Chart($('c3'),{type:'bar',data:{labels:d.categories.map(r=>r.category),datasets:[{data:d.categories.map(r=>parseFloat(r.ventes_totales)),backgroundColor:CC,borderRadius:8,borderSkipped:false,datalabels:DL_BARH_USD}]},options:co({indexAxis:'y',...NL,scales:{x:{...yFmt},y:{...scaleOpts}},layout:{padding:{right:55}},plugins:{legend:{display:false},datalabels:DL_BARH_USD}})});
+  if(d.quarterly?.length){
+    const vals=d.quarterly.map(r=>parseFloat(r.variation_pct)||0);
+    $('t4').textContent=yr?`📉 Variations (${yr})`:'📉 Variations Trimestrielles';
+    charts.c4=new Chart($('c4'),{type:'bar',data:{labels:d.quarterly.map(r=>`T${r.trimestre} ${r.annee}`),datasets:[{data:vals,backgroundColor:vals.map(v=>v>=0?'rgba(16,185,129,.7)':'rgba(244,63,94,.7)'),borderRadius:6,borderSkipped:false,datalabels:DL_BAR_PCT}]},options:co({...NL,scales:{x:scaleOpts,y:{...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>v+'%'}}},layout:{padding:{top:20,bottom:20}},plugins:{legend:{display:false},datalabels:DL_BAR_PCT}})});
+  }
+  if(d.top_products?.length)charts.c5=new Chart($('c5'),{type:'bar',data:{labels:d.top_products.map(r=>r.sub_category),datasets:[{data:d.top_products.map(r=>parseFloat(r.ventes_totales)),backgroundColor:'rgba(59,130,246,.8)',borderRadius:6,borderSkipped:false,datalabels:DL_BARH_USD}]},options:co({indexAxis:'y',...NL,scales:{x:{...yFmt},y:{...scaleOpts}},layout:{padding:{right:55}},plugins:{legend:{display:false},datalabels:DL_BARH_USD}})});
+  if(d.segments?.length)charts.c6=new Chart($('c6'),{type:'pie',data:{labels:d.segments.map(r=>r.segment),datasets:[{data:d.segments.map(r=>parseFloat(r.ventes_totales)),backgroundColor:CC,borderWidth:0,hoverOffset:8,datalabels:DL_PIE_PCT}]},options:co({plugins:{legend:{position:'right',labels:{color:'rgba(180,200,255,.55)',font:{size:11}}},datalabels:DL_PIE_PCT}})});
+  if(d.monthly?.length){
+    $('t7').textContent=yr?`📊 Évolution Mensuelle (${yr})`:'📊 Évolution Mensuelle';
+    const ds=[{label:'CA Mensuel',data:d.monthly.map(r=>parseFloat(r.ventes_mensuelles)),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.07)',fill:true,tension:.3,pointRadius:3,pointBackgroundColor:'#3b82f6',datalabels:DL_LINE_USD}];
+    const mm3=d.monthly.map(r=>r.moyenne_mobile_3m?parseFloat(r.moyenne_mobile_3m):null);
+    if(mm3.some(v=>v!==null))ds.push({label:'Moy. Mobile 3M',data:mm3,borderColor:'#d4a853',borderDash:[5,5],tension:.3,pointRadius:0,fill:false,datalabels:{display:false}});
+    charts.c7=new Chart($('c7'),{type:'line',data:{labels:d.monthly.map(r=>`${r.annee}-${String(r.mois).padStart(2,'0')}`),datasets:ds},options:co({scales:{x:{...scaleOpts,ticks:{...scaleOpts.ticks,maxTicksLimit:12}},y:yFmt},layout:{padding:{top:20}},plugins:{datalabels:DL_LINE_USD}})});
+  }
+  if(d.regions?.length){
+    $('t8').textContent=yr?`🗺️ Régions (${yr})`:'🗺️ Comparaison Régionale';
+    charts.c8=new Chart($('c8'),{type:'bar',data:{labels:d.regions.map(r=>r.region),datasets:[{label:'CA',data:d.regions.map(r=>parseFloat(r.ventes_totales)),backgroundColor:CC,borderRadius:8,borderSkipped:false,datalabels:DL_BAR_USD},{label:'Commandes',data:d.regions.map(r=>parseInt(r.nb_commandes||0)),backgroundColor:CC.map(c=>c+'44'),borderRadius:8,borderSkipped:false,hidden:true,datalabels:{display:false}}]},options:co({scales:{x:scaleOpts,y:yFmt},layout:{padding:{top:20}},plugins:{datalabels:DL_BAR_USD}})});
+  }
+  if(yr&&d.quarterly?.length){
+    $('t9').textContent=`🛒 CA Trimestriel (${yr})`;
+    charts.c9=new Chart($('c9'),{type:'line',data:{labels:d.quarterly.map(r=>'T'+r.trimestre),datasets:[{label:'CA',data:d.quarterly.map(r=>parseFloat(r.ventes_totales)),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.08)',fill:true,tension:.3,pointRadius:6,pointBackgroundColor:'#10b981',pointBorderColor:'var(--surface)',pointBorderWidth:2,datalabels:{...DL_LINE_USD,display:true}}]},options:co({scales:{x:scaleOpts,y:yFmt},layout:{padding:{top:20}},plugins:{datalabels:{...DL_LINE_USD,display:true}}})});
+  } else if(allAn.length){
+    $('t9').textContent='🛒 Volume de Commandes';
+    charts.c9=new Chart($('c9'),{type:'line',data:{labels:allAn.map(r=>r.annee),datasets:[{label:'Commandes',data:allAn.map(r=>parseInt(r.nb_commandes)),borderColor:'#10b981',pointRadius:6,pointBackgroundColor:'#10b981',tension:.3,fill:false,datalabels:{...DL_LINE_INT,display:true}}]},options:co({...NL,scales:{x:scaleOpts,y:scaleOpts},layout:{padding:{top:20}},plugins:{legend:{display:false},datalabels:{...DL_LINE_INT,display:true}}})});
+  }
+  if(d.quarterly?.length){
+    $('t10').textContent=yr?`📈 Tendance (${yr})`:'📈 CA Trimestriel';
+    charts.c10=new Chart($('c10'),{type:'line',data:{labels:d.quarterly.map(r=>`T${r.trimestre} ${r.annee}`),datasets:[{data:d.quarterly.map(r=>parseFloat(r.ventes_totales)),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',fill:true,tension:.3,pointRadius:3,datalabels:DL_LINE_USD}]},options:co({...NL,scales:{x:scaleOpts,y:yFmt},layout:{padding:{top:20}},plugins:{legend:{display:false},datalabels:DL_LINE_USD}})});
+  }
+}
+
+// ANOMALIES
+function renderAnomalies(a){
+  // ✅ v5.8 — Distingue ALERTES (chutes YoY > 20%, rouge) et SIGNAUX POSITIFS
+  // (hausses YoY > 20%, vert).
+  if(!a?.length){
+    $('anomList').innerHTML='<p style="color:var(--t3);font-size:13px;font-family:var(--font-mono)">Aucune anomalie ni signal positif détecté.</p>';
+    $('anomCount').textContent='0';
+    return;
+  }
+  const alertes = a.filter(x => x.niveau === 'ALERTE');
+  const infos   = a.filter(x => x.niveau !== 'ALERTE');
+  $('anomCount').textContent = a.length;
+
+  let html = '';
+  if(alertes.length){
+    html += `<div style="font-weight:600;color:#dc2626;margin:4px 0 8px 0;font-size:13px">⚠️ ${alertes.length} alerte${alertes.length>1?'s':''} critique${alertes.length>1?'s':''} (chute YoY &gt; 20%)</div>`;
+    html += alertes.map(x=>`<div class="anomaly-item alert"><span style="flex-shrink:0">⚠️</span><span>${escapeHtml(x.description||x.niveau)}</span></div>`).join('');
+  }
+  if(infos.length){
+    // ✅ v5.8.1 — Pluriel : "signal" → "signaux" (pas "signalaux"), "positif" → "positifs"
+    const motSig = infos.length > 1 ? 'signaux' : 'signal';
+    const motPos = infos.length > 1 ? 'positifs' : 'positif';
+    html += `<div style="font-weight:600;color:#16a34a;margin:${alertes.length?14:4}px 0 8px 0;font-size:13px">ℹ️ ${infos.length} ${motSig} ${motPos} (hausse YoY &gt; 20%)</div>`;
+    html += infos.map(x=>`<div class="anomaly-item info"><span style="flex-shrink:0">ℹ️</span><span>${escapeHtml(x.description||x.niveau)}</span></div>`).join('');
+  }
+  $('anomList').innerHTML = html;
+}
+
+// ✅ v5.8 — Recommandations stratégiques (Chantier 4)
+// Lit nlp_report.structure.recommendations (clé anglaise utilisée par Mistral).
+// Fallback sur .recommandations pour compat si schéma futur change.
+function renderRecommendations(structure){
+  const target = $('recoList');
+  if(!target) return;
+  // ✅ v5.8.1 — Mistral retourne `recommendations` (anglais), pas `recommandations`
+  let recos = [];
+  if(structure){
+    if(Array.isArray(structure.recommendations)) recos = structure.recommendations;
+    else if(Array.isArray(structure.recommandations)) recos = structure.recommandations;
+  }
+  $('recoCount').textContent = recos.length;
+  if(!recos.length){
+    target.innerHTML = '<p style="color:var(--t3);font-size:13px;font-family:var(--font-mono)">Aucune recommandation disponible pour ce périmètre.</p>';
+    return;
+  }
+  // Tri par priorité haute → moyenne → basse (accepte FR et EN)
+  const order = {haute: 0, high: 0, moyenne: 1, medium: 1, basse: 2, low: 2};
+  const getPrio = r => (r.priorite || r.priority || '').toLowerCase();
+  const getNiv  = r => (r.niveau   || r.level    || '').toLowerCase();
+  const getConf = r => (r.confiance|| r.confidence|| '').toLowerCase();
+  const getAction = r => r.action || r.title || r.titre || '';
+  const getJustif = r => r.justification || r.rationale || r.justif || '';
+
+  const sorted = [...recos].sort((a,b)=>(order[getPrio(a)] ?? 9) - (order[getPrio(b)] ?? 9));
+
+  const colorPrio = {haute:'#dc2626', high:'#dc2626', moyenne:'#f59e0b', medium:'#f59e0b', basse:'#6b7280', low:'#6b7280'};
+  const colorNiv  = {strategique:'#2563eb', strategic:'#2563eb', tactique:'#0891b2', tactical:'#0891b2', operationnel:'#0d9488', operational:'#0d9488'};
+  const colorConf = {élevée:'#16a34a', elevee:'#16a34a', high:'#16a34a', moyenne:'#ca8a04', medium:'#ca8a04', faible:'#dc2626', low:'#dc2626'};
+
+  target.innerHTML = sorted.map(r=>{
+    const p = getPrio(r), n = getNiv(r), c = getConf(r);
+    const prioLabel = r.priorite || r.priority || '?';
+    const nivLabel  = r.niveau || r.level || '';
+    const confLabel = r.confiance || r.confidence || '';
+    const badge = (label,color) => `<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:${color};color:#fff;font-size:11px;font-weight:600;margin-right:6px;text-transform:uppercase;letter-spacing:0.3px">${escapeHtml(label)}</span>`;
+    return `<div style="padding:12px 14px;margin-bottom:10px;border:1px solid var(--border);border-left:3px solid ${colorPrio[p]||'#6b7280'};border-radius:6px;background:rgba(255,255,255,0.02)">
+      <div style="margin-bottom:8px">
+        ${badge('Prio '+prioLabel, colorPrio[p]||'#6b7280')}
+        ${nivLabel?badge(nivLabel, colorNiv[n]||'#6b7280'):''}
+        ${confLabel?badge('Conf. '+confLabel, colorConf[c]||'#6b7280'):''}
+      </div>
+      <div style="font-weight:600;color:var(--t1);margin-bottom:6px;line-height:1.4">→ ${escapeHtml(stripMd(getAction(r)))}</div>
+      ${getJustif(r)?`<div style="font-size:13px;color:var(--t2);font-style:italic;line-height:1.4">${escapeHtml(stripMd(getJustif(r)))}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// NLP
+function renderNLP(n){
+  if(!n?.rapport_complet){$('nlpBlock').innerHTML='<p style="color:var(--t3)">Aucun rapport NLP disponible.</p>';return}
+  let h=`<div class="nlp-block">${nl2p(n.rapport_complet)}</div>`;
+  ['resume_bullet1','resume_bullet2','resume_bullet3'].forEach(k=>{if(n[k])h+=`<div class="nlp-bullet">• ${escapeHtml(stripMd(n[k]))}</div>`;});
+  if(n.score!=null)h+=`<div class="nlp-score">🎯 ${n.score}/100 — ${escapeHtml(n.mention||'')}</div>`;
+  $('nlpBlock').innerHTML=h;
+}
+
+async function loadNltkPanel(){
+  // Carte business enrichie (Priorite 1) : remplace le sentiment VADER
+  // generique par les vraies metriques business (tonalite metier, score
+  // borne [-100, +100], niveau de risque percu, stabilite, signaux,
+  // couverture business, themes dominants, mots-cles).
+  // Endpoint backend : /api/nlp/business-tonalite (calcule live depuis
+  // le rapport Mistral cache en BDD).
+  const target = $('nltkBlock');
+  if(!target) return;
+  try{
+    const data = await api('/nlp/business-tonalite');
+    if(!data){ target.innerHTML='<p style="color:var(--t3)">Analyse business non disponible.</p>'; return; }
+
+    const cls = (data.tonalite && data.tonalite.classe_visuelle) || 'neutre';
+    const tonLabel = (data.tonalite && data.tonalite.classe_label) || 'Neutre';
+    const score = (data.score_business != null) ? parseInt(data.score_business) : 0;
+    const risqueLabel = (data.niveau_risque && data.niveau_risque.label_lisible) || 'Faible';
+    const stabLabel = (data.stabilite && data.stabilite.label_lisible) || 'Stable';
+    const sig = data.signaux || {};
+    const couv = data.couverture_business || {};
+    const couvScore = parseInt(couv.score || 0);
+    const couvMention = couv.mention || '';
+    const themes = data.themes_dominants || [];
+    const keywords = data.keywords || [];
+    const stats = data.stats || {};
+
+    const couvColor = couvScore >= 75 ? '#10b981' : couvScore >= 50 ? '#f59e0b' : '#ef4444';
+
+    const scoreClass = score >= 30 ? 'favorable' : score >= -10 ? 'neutre' : score >= -30 ? 'vigilance' : 'risque';
+    const scoreColor = scoreClass === 'favorable' ? '#10b981' : scoreClass === 'risque' ? '#ef4444' : scoreClass === 'vigilance' ? '#f59e0b' : '#6b7280';
+    const scorePct = Math.max(0, Math.min(100, (score + 100) / 2));
+
+    const risqueClass = data.niveau_risque && data.niveau_risque.label === 'eleve' ? 'risque'
+                      : data.niveau_risque && data.niveau_risque.label === 'modere' ? 'vigilance'
+                      : 'favorable';
+
+    const stabClass = data.stabilite && data.stabilite.label === 'stable' ? 'favorable' : 'vigilance';
+
+    const themesHtml = themes.length
+      ? themes.slice(0, 7).map(t =>
+          `<span class="biz-theme-badge">${escapeHtml(t.nom)} <span style="opacity:.6">x${t.score}</span></span>`
+        ).join('')
+      : '<span style="color:var(--t3);font-size:12px">Aucun theme dominant detecte.</span>';
+
+    const kwHtml = keywords.length
+      ? keywords.slice(0, 8).map(k => `<span class="nltk-tag">${escapeHtml(k.mot)}</span>`).join(' ')
+      : '';
+
+    const lacunes = (couv.lacunes || []).slice(0, 3);
+    const lacunesHtml = lacunes.length
+      ? `<div style="margin-top:10px;font-size:11px;color:var(--t3)"><strong>Suggestions :</strong> ${lacunes.map(escapeHtml).join(' &middot; ')}</div>`
+      : '';
+
+    target.innerHTML = `
+      <div class="biz-tonalite-grid">
+        <div class="biz-card ${cls}">
+          <div class="biz-label">Tonalite business</div>
+          <div class="biz-value ${cls}">${escapeHtml(tonLabel)}</div>
+          <div class="biz-sub">via lexique metier</div>
+        </div>
+        <div class="biz-card ${scoreClass}">
+          <div class="biz-label">Score business</div>
+          <div class="biz-value ${scoreClass}">${score > 0 ? '+' : ''}${score}</div>
+          <div class="biz-progress"><div class="biz-progress-fill" style="width:${scorePct}%;background:${scoreColor}"></div></div>
+          <div class="biz-sub">echelle [-100, +100]</div>
+        </div>
+        <div class="biz-card ${risqueClass}">
+          <div class="biz-label">Niveau de risque</div>
+          <div class="biz-value ${risqueClass}">${escapeHtml(risqueLabel)}</div>
+          <div class="biz-sub">${sig.risque || 0} signaux de risque</div>
+        </div>
+        <div class="biz-card ${stabClass}">
+          <div class="biz-label">Stabilite du discours</div>
+          <div class="biz-value ${stabClass}">${escapeHtml(stabLabel)}</div>
+          <div class="biz-sub">volatilite linguistique</div>
+        </div>
+      </div>
+
+      <div class="biz-signals">
+        <span>Signaux : <strong class="pos">+${sig.positifs || 0}</strong> positifs</span>
+        <span><strong class="neg">-${sig.negatifs || 0}</strong> negatifs</span>
+        <span><strong class="risk">${sig.risque || 0}</strong> de risque</span>
+        <span style="margin-left:auto;color:var(--t3)">${stats.nb_phrases || 0} phrases &middot; ${stats.nb_mots || 0} mots</span>
+      </div>
+
+      <div class="biz-section-title">Couverture business <strong style="color:var(--t1);font-family:inherit;text-transform:none;letter-spacing:0">${couvScore}/100${couvMention ? ' &middot; ' + escapeHtml(couvMention) : ''}</strong></div>
+      <div class="biz-progress" style="height:6px"><div class="biz-progress-fill" style="width:${couvScore}%;background:${couvColor}"></div></div>
+      ${lacunesHtml}
+
+      <div class="biz-section-title">Themes business dominants</div>
+      <div class="biz-themes-wrap">${themesHtml}</div>
+
+      ${kwHtml ? `<div class="biz-section-title">Mots-cles extraits</div><div>${kwHtml}</div>` : ''}
+    `;
+  }catch(e){
+    console.warn('NLTK business:', e);
+    // Fallback sur l'ancien endpoint si /nlp/business-tonalite n'est pas dispo
+    try{
+      const nltk = await api('/nlp/analysis');
+      if(!nltk){ target.innerHTML='<p style="color:var(--t3)">Analyse NLTK non disponible.</p>'; return; }
+      const kws = parseKeywords(nltk.keywords).slice(0, 8);
+      const kwsHtml = kws.map(k => `<span class="nltk-tag">${escapeHtml(k)}</span>`).join(' ');
+      const couv = nltk.couverture_score!=null ? `<span>Couverture business : <strong style="color:var(--t1)">${nltk.couverture_score}/100</strong></span>` : '';
+      const ton = nltk.tonalite ? `<span>Tonalite : <strong style="color:var(--t1)">${escapeHtml(nltk.tonalite)}</strong></span>` : '';
+      target.innerHTML = `<div class="nltk-row"><span>${nltk.nb_phrases||0} phrases</span><span>${nltk.nb_mots||0} mots</span>${couv}${ton}</div>${kwsHtml?`<div style="margin-top:10px"><div style="font-size:12px;color:var(--t3);margin-bottom:6px">Mots-cles extraits :</div>${kwsHtml}</div>`:''}`;
+    }catch(e2){
+      target.innerHTML='<p style="color:var(--t3)">Erreur de chargement NLTK.</p>';
+    }
+  }
+}
+
+async function loadValidationBadge(){
+  // Petit badge dans le header du panel NLTK qui indique l'etat de la
+  // validation metier des KPIs (Priorite 2). Discret par defaut, ne
+  // surcharge pas l'interface.
+  const target = $('validationBadge');
+  if(!target) return;
+  try{
+    const data = await api('/validation/business');
+    if(!data) return;
+    const color = data.status_global === 'ok' ? '#10b981'
+                : data.status_global === 'warning' ? '#f59e0b' : '#ef4444';
+    const label = data.status_global === 'ok' ? 'Donnees coherentes'
+                : data.status_global === 'warning' ? 'Avertissements' : 'Incoherences';
+    const title = (data.checks||[])
+      .map(c => `${c.status.toUpperCase()} - ${c.name} : ${c.message}`)
+      .join('\n');
+    target.innerHTML = `<span title="${escapeHtml(title)}" style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid ${color};border-radius:12px;color:${color};font-family:var(--font-mono);font-size:10px;letter-spacing:.5px">
+      <span style="width:6px;height:6px;background:${color};border-radius:50%;display:inline-block"></span>
+      ${escapeHtml(label)} (${data.nb_ok || 0}/${data.nb_checks || 0})
+    </span>`;
+  }catch(e){
+    // silent : ne pas casser le dashboard si l'endpoint manque
+    console.warn('validation badge:', e);
+  }
+}
+
+// Parser tolerant pour le champ `keywords` du endpoint /nlp/analysis.
+// L'API retourne une string CSV au format "mot:count, mot:count, ...".
+// Anciennement c'était un tableau [["mot",count], ...]. On gère les deux.
+function parseKeywords(kw){
+  if(!kw) return [];
+  if(typeof kw === 'string'){
+    // "a:4, plus:4, entreprise:4" → ["a", "plus", "entreprise"]
+    return kw.split(',').map(s=>{
+      const t = s.trim();
+      const idx = t.lastIndexOf(':');
+      return idx > 0 ? t.slice(0, idx).trim() : t;
+    }).filter(Boolean);
+  }
+  if(Array.isArray(kw)){
+    return kw.map(k => Array.isArray(k) ? k[0] : (k.mot || k.word || String(k))).filter(Boolean);
+  }
+  return [];
+}
+
+// REPORT
+async function loadReport(){
+  const el=$('reportContent');if(!el)return;
+  const ft=[];const y=$('fYear')?.value,r=$('fRegion')?.value,c=$('fCategory')?.value;
+  if(y)ft.push(`Année: ${y}`);if(r)ft.push(`Région: ${r}`);if(c)ft.push(`Catégorie: ${c}`);
+  const filterBar=ft.length?`<div style="margin-bottom:16px">${ft.map(f=>`<span class="filter-tag">${escapeHtml(f)}</span>`).join('')}</div>`:'';
+  el.innerHTML=filterBar+`
+    <div class="report-section" id="rep-kpi"><h3>📊 KPIs</h3><div class="loading"><div class="spinner"></div> Chargement...</div></div>
+    <div class="report-section" id="rep-nlp"><h3>📝 Rapport NLP</h3><div class="loading"><div class="spinner"></div> Génération en cours (5-10s)...</div></div>
+    <div class="report-section" id="rep-summary"><h3>📋 Résumé Exécutif</h3><div class="loading"><div class="spinner"></div></div></div>
+    <div class="report-section" id="rep-reco"><h3>🎯 Recommandations Stratégiques</h3><div class="loading"><div class="spinner"></div></div></div>
+    <div class="report-section" id="rep-nltk"><h3>🔤 Analyse NLTK</h3><div class="loading"><div class="spinner"></div></div></div>
+    <div class="report-section" id="rep-anom"><h3>🚨 Anomalies & Signaux Positifs</h3><div class="loading"><div class="spinner"></div></div></div>`;
+  const safeCall=async(ep,t=30000)=>{try{const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),t);const r=await fetch(API+ep,{signal:ctrl.signal});clearTimeout(timer);if(!r.ok)return null;return await r.json()}catch(e){return null}};
+  const[g,n,a,nltk]=await Promise.all([safeCall('/kpis/global'+qs(),10000),safeCall('/nlp/report'+qs(),30000),safeCall('/anomalies'+qs(),10000),safeCall('/nlp/analysis',10000)]);
+  const $s=id=>document.getElementById(id);
+  if($s('rep-kpi')){if(g&&g.ca_total!==undefined){$s('rep-kpi').innerHTML=`<h3>📊 KPIs</h3><p class="report-text">CA: <strong style="color:var(--t1)">${fmtM(g.ca_total)}</strong> &nbsp;|&nbsp; Croissance: <strong style="color:var(--t1)">${parseFloat(g.croissance_globale||0).toFixed(1)}%</strong> &nbsp;|&nbsp; Commandes: <strong style="color:var(--t1)">${parseInt(g.nb_commandes||0).toLocaleString()}</strong> &nbsp;|&nbsp; Top Région: <strong style="color:var(--t1)">${escapeHtml(g.meilleure_region||'—')}</strong></p>`;}else{$s('rep-kpi').innerHTML=`<h3>📊 KPIs</h3><p class="report-text" style="color:var(--t3)">Données indisponibles.</p>`;}}
+  if($s('rep-nlp')){if(n&&n.rapport_complet){$s('rep-nlp').innerHTML=`<h3>📝 Rapport NLP</h3><div class="nlp-block">${nl2p(n.rapport_complet)}</div>`;}else{$s('rep-nlp').innerHTML=`<h3>📝 Rapport NLP</h3><p class="report-text" style="color:var(--t3)">Rapport non disponible. <a href="#" onclick="loadReport();return false" style="color:var(--blue)">Réessayer</a></p>`;}}
+  if($s('rep-summary')){if(n){let s='<h3>📋 Résumé Exécutif</h3>';['resume_bullet1','resume_bullet2','resume_bullet3'].forEach(k=>{if(n[k])s+=`<p class="report-text" style="margin-bottom:8px">• ${escapeHtml(stripMd(n[k]))}</p>`;});if(n.score!=null)s+=`<div class="nlp-score">🎯 ${n.score}/100 — ${escapeHtml(n.mention||'')}</div>`;$s('rep-summary').innerHTML=s;}else{$s('rep-summary').innerHTML='<h3>📋 Résumé Exécutif</h3><p class="report-text" style="color:var(--t3)">Non disponible.</p>';}}
+  // ✅ v5.8 — rep-reco : Recommandations stratégiques (Chantier 4)
+  if($s('rep-reco')){
+    // ✅ v5.8.1 — Mistral retourne `recommendations` (anglais), pas `recommandations`
+    let recos = [];
+    if(n && n.structure){
+      if(Array.isArray(n.structure.recommendations)) recos = n.structure.recommendations;
+      else if(Array.isArray(n.structure.recommandations)) recos = n.structure.recommandations;
+    }
+    if(recos.length){
+      const ord = {haute: 0, high: 0, moyenne: 1, medium: 1, basse: 2, low: 2};
+      const getPrio = r => (r.priorite || r.priority || '').toLowerCase();
+      const getNiv  = r => (r.niveau   || r.level    || '').toLowerCase();
+      const getConf = r => (r.confiance|| r.confidence|| '').toLowerCase();
+      const getAction = r => r.action || r.title || r.titre || '';
+      const getJustif = r => r.justification || r.rationale || r.justif || '';
+      const sorted = [...recos].sort((x,y)=>(ord[getPrio(x)] ?? 9) - (ord[getPrio(y)] ?? 9));
+      const cP = {haute:'#dc2626', high:'#dc2626', moyenne:'#f59e0b', medium:'#f59e0b', basse:'#6b7280', low:'#6b7280'};
+      const cN = {strategique:'#2563eb', strategic:'#2563eb', tactique:'#0891b2', tactical:'#0891b2', operationnel:'#0d9488', operational:'#0d9488'};
+      const cC = {élevée:'#16a34a', elevee:'#16a34a', high:'#16a34a', moyenne:'#ca8a04', medium:'#ca8a04', faible:'#dc2626', low:'#dc2626'};
+      const badge = (label,color) => `<span style="display:inline-block;padding:2px 8px;border-radius:10px;background:${color};color:#fff;font-size:11px;font-weight:600;margin-right:6px;text-transform:uppercase;letter-spacing:0.3px">${escapeHtml(label)}</span>`;
+      let s = '<h3>🎯 Recommandations Stratégiques</h3>';
+      s += sorted.map(r=>{
+        const p = getPrio(r), niv = getNiv(r), c = getConf(r);
+        const prioL = r.priorite || r.priority || '?';
+        const nivL  = r.niveau || r.level || '';
+        const confL = r.confiance || r.confidence || '';
+        return `<div style="padding:12px 14px;margin-bottom:10px;border:1px solid var(--border);border-left:3px solid ${cP[p]||'#6b7280'};border-radius:6px;background:rgba(255,255,255,0.02)">
+          <div style="margin-bottom:8px">
+            ${badge('Prio '+prioL, cP[p]||'#6b7280')}
+            ${nivL?badge(nivL, cN[niv]||'#6b7280'):''}
+            ${confL?badge('Conf. '+confL, cC[c]||'#6b7280'):''}
+          </div>
+          <div style="font-weight:600;color:var(--t1);margin-bottom:6px;line-height:1.4">→ ${escapeHtml(stripMd(getAction(r)))}</div>
+          ${getJustif(r)?`<div style="font-size:13px;color:var(--t2);font-style:italic;line-height:1.4">${escapeHtml(stripMd(getJustif(r)))}</div>`:''}
+        </div>`;
+      }).join('');
+      $s('rep-reco').innerHTML = s;
+    } else {
+      $s('rep-reco').innerHTML = '<h3>🎯 Recommandations Stratégiques</h3><p class="report-text" style="color:var(--t3)">Aucune recommandation disponible pour ce périmètre.</p>';
+    }
+  }
+  if($s('rep-nltk')){if(nltk){const score=parseFloat(nltk.sentiment_score||0);const sentLabel=score>0.05?'Positif':(score<-0.05?'Négatif':'Neutre');const kws=parseKeywords(nltk.keywords).slice(0,10).join(', ');$s('rep-nltk').innerHTML=`<h3>🔤 Analyse NLTK</h3><p class="report-text">Sentiment : <strong style="color:var(--t1)">${sentLabel}</strong> (${score.toFixed(2)}). ${nltk.nb_phrases||0} phrases, ${nltk.nb_mots||0} mots (${nltk.mots_uniques||0} uniques).</p>${kws?`<p class="report-text"><strong style="color:var(--t1)">Mots-clés :</strong> ${escapeHtml(kws)}</p>`:''}`;}else{$s('rep-nltk').innerHTML='<h3>🔤 Analyse NLTK</h3><p class="report-text" style="color:var(--t3)">Analyse non disponible.</p>';}}
+  // ✅ v5.8 — rep-anom : sépare ALERTES (chutes critiques) et SIGNAUX POSITIFS (hausses)
+  if($s('rep-anom')){
+    if(a && a.length){
+      const alertes = a.filter(x => x.niveau === 'ALERTE');
+      const infos   = a.filter(x => x.niveau !== 'ALERTE');
+      let s = '<h3>🚨 Anomalies & Signaux Positifs</h3>';
+      if(alertes.length){
+        s += `<div style="font-weight:600;color:#dc2626;margin:8px 0;font-size:14px">⚠️ ${alertes.length} alerte${alertes.length>1?'s':''} critique${alertes.length>1?'s':''} (chute YoY &gt; 20%)</div>`;
+        s += alertes.map(x=>`<div class="anomaly-item alert"><span>⚠️</span><span>${escapeHtml(x.description||'')}</span></div>`).join('');
+      }
+      if(infos.length){
+        const motSig = infos.length > 1 ? 'signaux' : 'signal';
+        const motPos = infos.length > 1 ? 'positifs' : 'positif';
+        s += `<div style="font-weight:600;color:#16a34a;margin:${alertes.length?16:8}px 0;font-size:14px">ℹ️ ${infos.length} ${motSig} ${motPos} (hausse YoY &gt; 20%)</div>`;
+        s += infos.map(x=>`<div class="anomaly-item info"><span>ℹ️</span><span>${escapeHtml(x.description||'')}</span></div>`).join('');
+      }
+      $s('rep-anom').innerHTML = s;
+    } else {
+      $s('rep-anom').innerHTML = '<h3>🚨 Anomalies & Signaux Positifs</h3><p class="report-text" style="color:var(--t3)">Aucune anomalie ni signal positif détecté sur ce périmètre.</p>';
+    }
+  }
+}
+
+// CHATBOT
+// Tableau global qui stocke les suggestions courantes par bulle, indexees.
+// Les boutons utilisent un data-idx pour eviter les soucis d'echappement
+// (apostrophes, guillemets) dans les attributs onclick.
+const CHAT_SUG_REGISTRY = {};
+
+function sendChat(){const v=$('chatInput').value.trim();if(!v)return;askChat(v);$('chatInput').value=''}
+
+// Envoie une question depuis un bouton de suggestion (helper global expose au HTML).
+function chatSuggest(q){
+  if(!q)return;
+  $('chatInput').value = q;
+  askChat(q);
+  $('chatInput').value = '';
+}
+
+// Appelee par les data-driven chips : lit le texte depuis le registre.
+function chatSugClick(btn){
+  const idx = btn.getAttribute('data-idx');
+  const bubbleId = btn.getAttribute('data-bubble');
+  const arr = CHAT_SUG_REGISTRY[bubbleId];
+  if(arr && arr[idx] != null) chatSuggest(arr[idx]);
+}
+
+async function askChat(q){
+  const m=$('chatMsgs');
+  m.innerHTML+=`<div class="chat-bubble user">${escapeHtml(q)}</div>`;
+  const lid='cld-'+Date.now();
+  m.innerHTML+=`<div class="chat-bubble bot" id="${lid}"><div class="chat-loading"><div class="spinner"></div> Réflexion...</div></div>`;
+  m.scrollTop=m.scrollHeight;
+  try{
+    const yr=$('fYear')?.value||null,rg=$('fRegion')?.value||null,ct=$('fCategory')?.value||null;
+    const resp=await fetch(API+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q,lang,year:yr?parseInt(yr):null,region:rg||null,category:ct||null})});
+    const data=await resp.json();
+    const el=document.getElementById(lid);
+    if(el){
+      if(resp.ok && data.response){
+        let html = nl2p(data.response);
+        if(Array.isArray(data.suggestions) && data.suggestions.length){
+          // Stocke les suggestions dans le registre pour eviter l'echappement
+          CHAT_SUG_REGISTRY[lid] = data.suggestions.slice();
+          html += '<div class="chat-suggestions">';
+          html += '<div class="chat-sug-label">' + (lang==='fr'?'Suggestions :':'Suggestions:') + '</div>';
+          html += '<div class="chat-sug-chips">';
+          data.suggestions.forEach((s, i) => {
+            html += `<button class="chat-sug-chip" data-idx="${i}" data-bubble="${lid}" onclick="chatSugClick(this)">${escapeHtml(s)}</button>`;
+          });
+          html += '</div></div>';
+        }
+        el.innerHTML = html;
+      } else {
+        el.innerHTML = 'Erreur: ' + escapeHtml(data.detail || (lang==='fr'?'Impossible de repondre.':'Unable to answer.'));
+      }
+    }
+  }catch(e){
+    const el=document.getElementById(lid);
+    if(el)el.innerHTML = (lang==='fr'?'Erreur de connexion a l\'API.':'API connection error.');
+  }
+  m.scrollTop=m.scrollHeight;
+}
+
+// AUDIO
+function speakContent(type){
+  if(!('speechSynthesis' in window))return;speechSynthesis.cancel();let text='';
+  const n=currentData?.nlp_report;if(!n&&type!=='alerts')return;
+  if(type==='full')text=stripMd(n?.rapport_complet||'');
+  else if(type==='summary')text=[n?.resume_bullet1,n?.resume_bullet2,n?.resume_bullet3].filter(Boolean).map(stripMd).join('. ');
+  else if(type==='alerts'){const a=currentData?.anomalies||[];text=!a.length?(lang==='fr'?'Aucune anomalie.':'No anomalies.'):a.map(a=>stripMd(a.description||a.niveau)).join('. ');}
+  if(!text)return;
+  const u=new SpeechSynthesisUtterance(text);u.lang=lang==='fr'?'fr-FR':'en-US';u.rate=parseFloat($('speechRate')?.value||'1');speechSynthesis.speak(u);
+}
+function stopSpeak(){if('speechSynthesis' in window)speechSynthesis.cancel()}
+
+// ABOUT & SETTINGS
+async function loadHealth(){const d=await api('/health');if(!d){$('healthInfo').innerHTML='<p style="color:var(--t3)">API indisponible</p>';return}let h=`<p style="font-size:13px;margin-bottom:12px;color:var(--t2)">DB : <strong style="color:${d.database?'var(--emerald)':'var(--rose)'}">${d.database?'✅ Connectée':'❌ Déconnectée'}</strong></p>`;if(d.tables){h+='<table style="width:100%;font-size:12px;font-family:var(--font-mono)"><tr style="color:var(--t3)"><td style="padding:4px 0">Table</td><td>Lignes</td></tr>';for(const[t,c]of Object.entries(d.tables))h+=`<tr><td style="padding:3px 0;color:var(--t2)">${t}</td><td><strong style="color:var(--t1)">${c}</strong></td></tr>`;h+='</table>'}$('healthInfo').innerHTML=h}
+async function loadPdfList(){const d=await api('/pdf/list');if(!d?.length){$('pdfHistory').innerHTML='<p style="font-size:13px;color:var(--t3);font-family:var(--font-mono)">Aucun PDF généré.</p>';return}$('pdfHistory').innerHTML=d.slice(0,10).map(p=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--rim);font-size:12px;font-family:var(--font-mono)"><span style="color:var(--t2)">${escapeHtml(p.filename)}</span><span style="color:var(--t3)">${p.size_kb} KB</span></div>`).join('')}
+
+// ACTIONS
+function genPDF(){let u=`${API}/pdf/generate?lang=${lang}&report_type=global`;const y=$('fYear')?.value,r=$('fRegion')?.value,c=$('fCategory')?.value;if(y)u+=`&year=${y}`;if(r)u+=`&region=${r}`;if(c)u+=`&category=${c}`;window.open(u,'_blank')}
+async function checkDB(){const d=await api('/health');if(d?.database){$('dbDot').classList.remove('off');$('dbLabel').textContent='PostgreSQL · connecté'}else{$('dbDot').classList.add('off');$('dbLabel').textContent='DB déconnectée'}}
+
+document.addEventListener('DOMContentLoaded',async()=>{await checkDB();await loadFilters()});
+</script>
+</body>
+</html>

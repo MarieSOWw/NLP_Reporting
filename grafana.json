@@ -1,0 +1,2338 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Dashboard automatisé — Pipeline Spark → NLP → PostgreSQL",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "dfhwiid7zjo5ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#1A5FA8",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#1A5FA8",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      },
+      "id": 200,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(ca_total,0) AS v FROM kpi_global ORDER BY id DESC LIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "💰 Chiffre d'Aff.",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "dfhwiid7zjo5ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#639922",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#639922",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      },
+      "id": 201,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(nb_commandes,0) AS v FROM kpi_global ORDER BY id DESC LIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "📦 Commandes",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "dfhwiid7zjo5ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#EF9F27",
+            "mode": "fixed"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#EF9F27",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 0
+      },
+      "id": 202,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(croissance_globale,0) AS v FROM kpi_global ORDER BY id DESC LIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "📈 Croissance",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "dfhwiid7zjo5ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#9B59B6",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#9B59B6",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 0
+      },
+      "id": 203,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(panier_moyen,0) AS v FROM kpi_global ORDER BY id DESC LIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "🛒 Panier Moyen",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "dfhwiid7zjo5ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#1ABC9C",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#1ABC9C",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 0
+      },
+      "id": 204,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT COALESCE(nb_clients,0) AS v FROM kpi_global ORDER BY id DESC LIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "👥 Clients Uniq.",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "dfhwiid7zjo5ce"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "#E24B4A",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#E24B4A",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "/100"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 205,
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT score AS v FROM rapports_nlp ORDER BY generated_at DESC LIMIT 1",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "🏆 Score NLP",
+      "type": "stat"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 20,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "🎯 Score de Performance NLP",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [],
+              "max": 100,
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 0
+                  },
+                  {
+                    "color": "#6ed1e021",
+                    "value": 9
+                  },
+                  {
+                    "color": "light-orange",
+                    "value": 40
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 55
+                  },
+                  {
+                    "color": "semi-dark-green",
+                    "value": 85
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 10,
+            "w": 24,
+            "x": 0,
+            "y": 5
+          },
+          "id": 12,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showThresholdLabels": false,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT \r\n    score AS \"Score NLP\"\r\nFROM rapports_nlp\r\nORDER BY generated_at DESC\r\nLIMIT 1",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "🎯 Score de Performance NLP",
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 455
+          },
+          "id": 13,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    CASE niveau\r\n        WHEN 'ALERTE' THEN '🔴 ALERTE'\r\n        ELSE '🟡 INFO'\r\n    END AS \"Niveau\",\r\n    'T' || trimestre || ' ' || annee AS \"Période\",\r\n    ROUND(variation::numeric, 1) || '%' AS \"Variation\",\r\n    ventes AS \"Ventes ($)\",\r\n    description AS \"Description\"\r\nFROM anomalies\r\nWHERE annee::text IN (${annee:sqlstring})\r\nORDER BY\r\n    CASE niveau WHEN 'ALERTE' THEN 0 ELSE 1 END,\r\n    ABS(variation) DESC",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Anomalies Détectées ",
+          "type": "table"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 467
+          },
+          "id": 14,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"padding: 20px; font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;\">\n  <h2 style=\"margin-top: 0;\">📊 Rapport Business Automatique</h2>\n  <p style=\"opacity: 0.9;\">Généré par Mistral (Transformer) | Pipeline NLP Reporting</p>\n</div>\n\n<div style=\"padding: 20px; font-family: Arial, sans-serif;\">\n  <h3 style=\"color: #1a5fa8; border-bottom: 2px solid #1a5fa8; padding-bottom: 10px;\">📈 Analyse des Performances</h3>\n  \n  <p style=\"font-size: 15px; line-height: 1.8; text-align: justify;\">\n    Le chiffre d'affaires total a augmenté de <strong style=\"color: #639922;\">49,5%</strong> au cours de la période 2015-2018. \n    La meilleure année a été <strong>2018</strong> avec des revenus de <strong style=\"color: #1a5fa8;\">713 927 $</strong> et 3 145 commandes. \n  </p>\n  \n  <p style=\"font-size: 15px; line-height: 1.8; text-align: justify;\">\n    Le trimestre le plus fort : <strong>T4 2017</strong> avec une croissance de <strong style=\"color: #639922;\">+69,45%</strong> atteignant 230 957 $ en ventes.\n    Le trimestre le plus faible : <strong>T1 2016</strong> avec une chute de <strong style=\"color: #e24b4a;\">-64,9%</strong>.\n  </p>\n\n  <h3 style=\"color: #1a5fa8; border-bottom: 2px solid #1a5fa8; padding-bottom: 10px; margin-top: 25px;\">🏆 Top 3 Sous-catégories</h3>\n  \n  <table style=\"width: 100%; border-collapse: collapse; margin: 15px 0;\">\n    <tr style=\"background: #1a5fa8; color: white;\">\n      <th style=\"padding: 12px; text-align: left;\">Rang</th>\n      <th style=\"padding: 12px; text-align: left;\">Sous-catégorie</th>\n      <th style=\"padding: 12px; text-align: right;\">Ventes (USD)</th>\n    </tr>\n    <tr style=\"background: #f8f9fa;\">\n      <td style=\"padding: 10px;\">🥇</td>\n      <td style=\"padding: 10px;\"><strong>Phones</strong></td>\n      <td style=\"padding: 10px; text-align: right;\">327 528 $</td>\n    </tr>\n    <tr>\n      <td style=\"padding: 10px;\">🥈</td>\n      <td style=\"padding: 10px;\"><strong>Chairs</strong></td>\n      <td style=\"padding: 10px; text-align: right;\">322 823 $</td>\n    </tr>\n    <tr style=\"background: #f8f9fa;\">\n      <td style=\"padding: 10px;\">🥉</td>\n      <td style=\"padding: 10px;\"><strong>Storage</strong></td>\n      <td style=\"padding: 10px; text-align: right;\">212 303 $</td>\n    </tr>\n  </table>\n\n  <div style=\"background: #e6f1fb; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 5px solid #1a5fa8;\">\n    <strong style=\"color: #1a5fa8; font-size: 18px;\">🎯 Score de Performance : 81/100</strong>\n    <p style=\"margin: 5px 0 0 0; color: #666;\">Mention : <strong>Très bien</strong></p>\n  </div>\n  \n  <p style=\"margin-top: 20px; font-size: 12px; color: #888; text-align: center;\">\n    <em>Rapport généré automatiquement par le pipeline : Spark → NLTK → Mistral (Transformer) → PostgreSQL</em>\n  </p>\n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "12.4.2",
+          "title": "📝 Rapport Généré par Mistral (Transformer)",
+          "type": "text"
+        },
+        {
+          "fieldConfig": {
+            "defaults": {},
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 479
+          },
+          "id": 15,
+          "options": {
+            "code": {
+              "language": "plaintext",
+              "showLineNumbers": false,
+              "showMiniMap": false
+            },
+            "content": "<div style=\"padding: 20px; font-family: Arial, sans-serif;\">\n  <div style=\"background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 15px 20px; border-radius: 10px; color: white; margin-bottom: 20px;\">\n    <h2 style=\"margin: 0;\">📌 RÉSUMÉ EXÉCUTIF</h2>\n    <p style=\"margin: 5px 0 0 0; opacity: 0.9;\">3 points clés générés par NLP</p>\n  </div>\n  \n  <div style=\"background: #f0fff4; padding: 15px; border-radius: 8px; border-left: 5px solid #639922; margin: 15px 0;\">\n    <strong style=\"color: #639922;\">1. CROISSANCE</strong>\n    <p style=\"margin: 8px 0 0 0; font-size: 14px;\">\n      Croissance globale de <strong>49.5%</strong> sur la période 2015–2018, avec un chiffre d'affaires record de <strong>713,927 USD</strong> en 2018.\n    </p>\n  </div>\n  \n  <div style=\"background: #e6f1fb; padding: 15px; border-radius: 8px; border-left: 5px solid #1a5fa8; margin: 15px 0;\">\n    <strong style=\"color: #1a5fa8;\">2. MEILLEURE PERFORMANCE</strong>\n    <p style=\"margin: 8px 0 0 0; font-size: 14px;\">\n      Meilleure performance trimestrielle : <strong>T4 2017 (+69.45%)</strong>, portée par la catégorie Phones (327,528 USD).\n    </p>\n  </div>\n  \n  <div style=\"background: #fff5f5; padding: 15px; border-radius: 8px; border-left: 5px solid #e24b4a; margin: 15px 0;\">\n    <strong style=\"color: #e24b4a;\">3. ⚠️ ALERTE</strong>\n    <p style=\"margin: 8px 0 0 0; font-size: 14px;\">\n      Chute de <strong>64.9%</strong> au T1 2016 (62,137 USD). Analyse recommandée.\n    </p>\n  </div>\n  \n  <div style=\"background: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 20px; text-align: center;\">\n    <em style=\"font-size: 12px; color: #856404;\">\n      🤖 Ce résumé a été généré automatiquement par le pipeline NLP (NLTK + Mistral Transformer)\n    </em>\n  </div>\n</div>",
+            "mode": "html"
+          },
+          "pluginVersion": "12.4.2",
+          "title": "Résumé Exécutif",
+          "type": "text"
+        }
+      ],
+      "title": "🤖 NLP & Insights",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 18,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "👥 Répartition par Segment Client",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 6
+          },
+          "id": 6,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.9,
+            "colorByField": "metric",
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "auto",
+            "showValue": "auto",
+            "stacking": "normal",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    segment AS \"Segment\",\r\n    SUM(ventes_segment)::float AS \"Ventes\"\r\nFROM kpi_segment\r\nWHERE annee::text IN (${annee:sqlstring})\r\n  AND segment IN (${segment:sqlstring})\r\nGROUP BY segment\r\nORDER BY SUM(ventes_segment) DESC",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Répartition par Segment",
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "🌍 Répartition des Ventes par Région",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                }
+              },
+              "mappings": []
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 114
+          },
+          "id": 5,
+          "options": {
+            "displayLabels": [
+              "name",
+              "percent",
+              "value"
+            ],
+            "legend": {
+              "displayMode": "list",
+              "placement": "right",
+              "showLegend": true,
+              "values": [
+                "value",
+                "percent"
+              ]
+            },
+            "pieType": "donut",
+            "reduceOptions": {
+              "calcs": [
+                "last"
+              ],
+              "fields": "",
+              "values": true
+            },
+            "sort": "desc",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    region,\r\n    SUM(ventes_totales)::float AS ventes\r\nFROM kpi_region_trim\r\nWHERE annee::text IN (${annee:sqlstring})\r\n  AND region IN (${region:sqlstring})\r\nGROUP BY region\r\nORDER BY ventes DESC",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Répartition par Région ",
+          "type": "piechart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "📦 Répartition par Catégorie",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 126
+          },
+          "id": 7,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.9,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "horizontal",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    category AS \"Catégorie\",\r\n    SUM(ventes_categorie)::float AS \"Ventes\"\r\nFROM kpi_categorie\r\nWHERE annee::text IN (${annee:sqlstring})\r\n  AND category IN (${category:sqlstring})\r\nGROUP BY category\r\nORDER BY SUM(ventes_categorie) DESC",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Répartition par Catégorie",
+          "type": "barchart"
+        }
+      ],
+      "title": "🌍 Répartitions",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 19,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "🏆 Top 10 Sous-catégories",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-GrYlRd"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "currencyUSD"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 7
+          },
+          "id": 8,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.7,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "horizontal",
+            "showValue": "always",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT \r\n    sub_category AS \"Sous-catégorie\",\r\n    ventes_totales AS \"Ventes\"\r\nFROM kpi_top_produits\r\nORDER BY ventes_totales DESC\r\nLIMIT 10",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Top 10 Sous-catégories",
+          "type": "barchart"
+        }
+      ],
+      "title": "🏆 Classements",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 16,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "Chiffre d'Affaires par Année",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "light-blue",
+                    "value": 0
+                  },
+                  {
+                    "color": "light-green",
+                    "value": 500000
+                  },
+                  {
+                    "color": "dark-green",
+                    "value": 700000
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 8
+          },
+          "id": 4,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.6,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "vertical",
+            "showValue": "auto",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    annee::text AS \"Année\",\r\n    ca_annuel AS \"Chiffre d'Affaires\"\r\nFROM kpi_annuel\r\nWHERE annee::text IN (${annee:sqlstring})\r\nORDER BY annee",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": " CA par Année",
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "🗺️ Performance Région × Trimestre",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                },
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 20
+          },
+          "id": 10,
+          "options": {
+            "cellHeight": "sm",
+            "showHeader": true
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    region AS \"Région\",\r\n    SUM(CASE WHEN trimestre = 1 THEN ventes_totales ELSE 0 END) AS \"T1\",\r\n    SUM(CASE WHEN trimestre = 2 THEN ventes_totales ELSE 0 END) AS \"T2\",\r\n    SUM(CASE WHEN trimestre = 3 THEN ventes_totales ELSE 0 END) AS \"T3\",\r\n    SUM(CASE WHEN trimestre = 4 THEN ventes_totales ELSE 0 END) AS \"T4\",\r\n    SUM(ventes_totales) AS \"Total\"\r\nFROM kpi_region_trim\r\nWHERE annee::text IN (${annee:sqlstring})\r\n  AND region IN (${region:sqlstring})\r\nGROUP BY region\r\nORDER BY SUM(ventes_totales) DESC",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Performance Région × Trimestre",
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 1,
+              "fieldMinMax": false,
+              "mappings": [],
+              "max": 80,
+              "min": -70,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "dark-red",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": -20
+                  },
+                  {
+                    "color": "#EAB839",
+                    "value": 0
+                  },
+                  {
+                    "color": "super-light-green",
+                    "value": 20
+                  },
+                  {
+                    "color": "green",
+                    "value": 50
+                  }
+                ]
+              },
+              "unit": "percent"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 32
+          },
+          "id": 3,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.8,
+            "colorByField": "Variation",
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "vertical",
+            "showValue": "always",
+            "stacking": "none",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    'T' || trimestre || '-' || annee AS \"Trimestre\",\r\n    variation_pct AS \"Variation\"\r\nFROM kpi_variation\r\nWHERE variation_pct IS NOT NULL\r\n  AND annee::text IN (${annee:sqlstring})\r\nORDER BY annee, trimestre",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Variations Trimestrielles (%)",
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "efhph8jskmmm8a"
+          },
+          "description": "🌍 Performance Régions par Année",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 44
+          },
+          "id": 11,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "vertical",
+            "showValue": "never",
+            "stacking": "normal",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xField": "annee",
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    annee::text AS annee,\r\n    SUM(CASE WHEN region = 'West' THEN ventes_totales ELSE 0 END)::float AS \"West\",\r\n    SUM(CASE WHEN region = 'East' THEN ventes_totales ELSE 0 END)::float AS \"East\",\r\n    SUM(CASE WHEN region = 'Central' THEN ventes_totales ELSE 0 END)::float AS \"Central\",\r\n    SUM(CASE WHEN region = 'South' THEN ventes_totales ELSE 0 END)::float AS \"South\"\r\nFROM kpi_region_trim\r\nWHERE annee::text IN (${annee:sqlstring})\r\n  AND region IN (${region:sqlstring})\r\nGROUP BY annee\r\nORDER BY annee",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Régions par Année",
+          "type": "barchart"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "description": "👥 Performance Segments par Année",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "fillOpacity": 80,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineWidth": 1,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 56
+          },
+          "id": 9,
+          "options": {
+            "barRadius": 0,
+            "barWidth": 0.97,
+            "fullHighlight": false,
+            "groupWidth": 0.7,
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "orientation": "vertical",
+            "showValue": "auto",
+            "stacking": "normal",
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            },
+            "xTickLabelRotation": 0,
+            "xTickLabelSpacing": 0
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    annee::text AS annee,\r\n    SUM(CASE WHEN segment = 'Consumer' THEN ventes_segment ELSE 0 END)::float AS \"Consumer\",\r\n    SUM(CASE WHEN segment = 'Corporate' THEN ventes_segment ELSE 0 END)::float AS \"Corporate\",\r\n    SUM(CASE WHEN segment = 'Home Office' THEN ventes_segment ELSE 0 END)::float AS \"Home Office\"\r\nFROM kpi_segment\r\nWHERE annee::text IN (${annee:sqlstring})\r\n  AND segment IN (${segment:sqlstring})\r\nGROUP BY annee\r\nORDER BY annee",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Segments par Année",
+          "type": "barchart"
+        }
+      ],
+      "title": "📊 Variations & Performance",
+      "type": "row"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 17,
+      "panels": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 15,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "smooth",
+                "lineWidth": 2,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 69
+          },
+          "id": 2,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    date_mois AS time,\r\n    nb_commandes AS \"Commandes\"\r\nFROM kpi_mensuel\r\nWHERE annee::text IN (${annee:sqlstring})\r\nORDER BY date_mois",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "📦 Évolution des Commandes Mensuelles",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "dfhwiid7zjo5ce"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "continuous-purples"
+              },
+              "custom": {
+                "axisBorderShow": true,
+                "axisCenteredZero": false,
+                "axisColorMode": "series",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 20,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 2,
+                "pointSize": 3,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "currencyUSD"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 12,
+            "w": 24,
+            "x": 0,
+            "y": 81
+          },
+          "id": 1,
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.4.2",
+          "targets": [
+            {
+              "dataset": "nlp_reporting",
+              "datasource": {
+                "type": "grafana-postgresql-datasource",
+                "uid": "dfhwiid7zjo5ce"
+              },
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n    date_mois AS time,\r\n    ventes_mensuelles AS \"Ventes\"\r\nFROM kpi_mensuel\r\nWHERE annee::text IN (${annee:sqlstring})\r\nORDER BY date_mois",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "📈 Évolution des Ventes Mensuelles",
+          "type": "timeseries"
+        }
+      ],
+      "title": "📈 Évolution Temporelle",
+      "type": "row"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "dfhwiid7zjo5ce"
+        },
+        "definition": "SELECT AVG(annee) FROM kpi_annuel GROUP BY annee ORDER BY annee LIMIT 50 ",
+        "description": "Filtre par année",
+        "includeAll": true,
+        "label": "📅 Année",
+        "multi": true,
+        "name": "annee",
+        "options": [],
+        "query": {
+          "dataset": "nlp_reporting",
+          "editorMode": "builder",
+          "format": "table",
+          "query": "SELECT AVG(annee) FROM kpi_annuel GROUP BY annee ORDER BY annee LIMIT 50 ",
+          "rawSql": "SELECT annee FROM kpi_annuel GROUP BY annee ORDER BY annee LIMIT 50 ",
+          "refId": "SQLVariableQueryEditor-VariableQuery",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "annee",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "name": "annee",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "orderBy": {
+              "property": {
+                "name": "annee",
+                "type": "string"
+              },
+              "type": "property"
+            }
+          },
+          "table": "kpi_annuel"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "sort": 4,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "dfhwiid7zjo5ce"
+        },
+        "definition": "SELECT region FROM kpi_region_trim GROUP BY region LIMIT 50 ",
+        "includeAll": true,
+        "label": "🌍 Région",
+        "multi": true,
+        "name": "region",
+        "options": [],
+        "query": {
+          "dataset": "nlp_reporting",
+          "editorMode": "builder",
+          "format": "table",
+          "query": "SELECT region FROM kpi_region_trim GROUP BY region LIMIT 50 ",
+          "rawQuery": true,
+          "rawSql": "SELECT region FROM kpi_region_trim GROUP BY region ORDER BY region LIMIT 50 ",
+          "refId": "SQLVariableQueryEditor-VariableQuery",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "region",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "name": "region",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "orderBy": {
+              "property": {
+                "name": "region",
+                "type": "string"
+              },
+              "type": "property"
+            },
+            "whereJsonTree": {
+              "children1": [],
+              "id": "9a9a8a9a-0123-4456-b89a-b19d45a92be3",
+              "type": "group"
+            }
+          },
+          "table": "kpi_region_trim"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "dfhwiid7zjo5ce"
+        },
+        "definition": "SELECT segment FROM kpi_segment GROUP BY segment ORDER BY segment LIMIT 50 ",
+        "description": "Filtre par segment client",
+        "includeAll": true,
+        "label": "👥 Segment",
+        "multi": true,
+        "name": "segment",
+        "options": [],
+        "query": {
+          "dataset": "nlp_reporting",
+          "editorMode": "builder",
+          "format": "table",
+          "query": "SELECT segment FROM kpi_segment GROUP BY segment ORDER BY segment LIMIT 50 ",
+          "rawSql": "SELECT segment FROM kpi_segment GROUP BY segment ORDER BY segment LIMIT 50 ",
+          "refId": "SQLVariableQueryEditor-VariableQuery",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "segment",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "name": "segment",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "orderBy": {
+              "property": {
+                "name": "segment",
+                "type": "string"
+              },
+              "type": "property"
+            }
+          },
+          "table": "kpi_segment"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "dfhwiid7zjo5ce"
+        },
+        "definition": "SELECT category FROM kpi_categorie GROUP BY category LIMIT 50 ",
+        "description": "Filtre par catégorie de produit",
+        "includeAll": true,
+        "label": "📦 Catégorie",
+        "multi": true,
+        "name": "category",
+        "options": [],
+        "query": {
+          "dataset": "nlp_reporting",
+          "editorMode": "builder",
+          "format": "table",
+          "query": "SELECT category FROM kpi_categorie GROUP BY category LIMIT 50 ",
+          "rawSql": "SELECT category FROM kpi_categorie GROUP BY category ORDER BY category LIMIT 50 ",
+          "refId": "SQLVariableQueryEditor-VariableQuery",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [
+                  {
+                    "name": "category",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "name": "category",
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50,
+            "orderBy": {
+              "property": {
+                "name": "category",
+                "type": "string"
+              },
+              "type": "property"
+            }
+          },
+          "table": "kpi_categorie"
+        },
+        "refresh": 1,
+        "regex": "",
+        "regexApplyTo": "value",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "2014-12-31T23:00:00.000Z",
+    "to": "2018-12-30T23:00:00.000Z"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5m"
+    ]
+  },
+  "timezone": "browser",
+  "title": "NLP Business Reporting — Superstore Analytics",
+  "uid": "adjcdrx",
+  "version": 60,
+  "weekStart": ""
+}
